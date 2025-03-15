@@ -48,11 +48,13 @@ export default function HomePage() {
 						</button>
 						<button
 							onClick={() => router.push("/register")}
-							className="w-full max-w-lg bg-accent-gray text-primary dark:bg-accent-gray dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[140px] lg:left-[180px] hover:scale-105 transition"
+							className="w-full max-w-lg bg-accent-gray text-primary dark:bg-accent-beige dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[140px] lg:left-[180px] hover:scale-105 transition"
 						>
 							Register
 						</button>
-						<button className="w-full max-w-lg bg-accent-green text-dark dark:bg-accent-green dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition">
+						<button 
+                            onClick={() => router.push("/dashboard")}
+                            className="w-full max-w-lg bg-accent-green text-dark dark:bg-accent-green dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition">
 							Continue as Guest
 						</button>
 					</div>
