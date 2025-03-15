@@ -36,19 +36,20 @@ export default function DietOptionsPage() {
 			<ThemeToggle />
 
 			{/* Main Layout */}
-			<div className="container mx-auto flex flex-col lg:flex-row w-full space-y-6 lg:space-y-0">
-				{/* Left Sidebar (Tabs) - Full Width on Mobile */}
-				<div className="w-full lg:w-1/4 bg-accent-beige dark:bg-dark p-6 rounded-lg shadow-lg">
-					{/* Tab Buttons (Better Mobile Spacing) */}
+			<div className="container mx-auto flex flex-col lg:flex-row w-full space-y-6 lg:space-x-6 lg:space-y-0">
+				{/* Left Sidebar (Tabs) */}
+				<div className="w-full lg:w-1/4 bg-dark dark:bg-primary p-6 rounded-3xl shadow-lg flex flex-col">
+					{/* Tab Buttons */}
 					<div className="space-y-4">
 						{tabs.map((tab) => (
 							<button
 								key={tab.id}
-								className={`w-full text-lg font-bold py-4 rounded-lg transition ${
-									activeTab === tab.id
-										? "bg-dark text-primary dark:bg-primary dark:text-dark"
-										: "bg-gray-700 text-white dark:bg-gray-500 dark:text-dark"
-								}`}
+								className={`w-full text-lg font-bold py-4 rounded-3xl transition shadow-lg bg-gradient-to-b from-white/5 
+                        ${
+													activeTab === tab.id
+														? "bg-accent-gray text-white dark:bg-accent-beige dark:text-dark"
+														: "bg-dark text-primary dark:bg-primary dark:text-dark"
+												}`}
 								onClick={() => handleTabChange(tab.id)}
 							>
 								{tab.label}
@@ -56,14 +57,16 @@ export default function DietOptionsPage() {
 						))}
 					</div>
 
-					{/* Generate Button - Extra Margin for Mobile */}
-					<button className="w-full mt-6 mb-6 bg-accent-green text-dark py-4 rounded-lg font-bold shadow-lg hover:scale-105 transition">
-						Generate
-					</button>
+					{/* Generate Button - Now Aligned Below Tabs */}
+					<div className="mt-6">
+						<button className="w-full bg-accent-green text-dark py-4 rounded-3xl font-bold shadow-lg hover:scale-105 transition">
+							Generate
+						</button>
+					</div>
 				</div>
 
-				{/* Right Side - Form Content (Full Width on Mobile) */}
-				<div className="w-full lg:w-3/4 bg-dark text-primary dark:bg-gray-800 dark:text-primary p-6 rounded-lg shadow-lg">
+				{/* Right Side - Form Content (Now with Spacing) */}
+				<div className="w-full lg:w-3/4 bg-dark text-primary dark:bg-primary dark:text-dark p-6 rounded-3xl shadow-lg mt-6 lg:mt-0">
 					<h2 className="text-3xl font-bold mb-4">Diet Options</h2>
 
 					{/* Dynamic Tab Content */}
@@ -139,12 +142,6 @@ export default function DietOptionsPage() {
 					</div>
 				</div>
 			</div>
-
-			{/* Footer */}
-			<p className="text-center text-sm mt-6">
-				Powered by Google Gemini <br />
-				This project was developed by the [Your Team Name] team.
-			</p>
 		</div>
 	);
 }
