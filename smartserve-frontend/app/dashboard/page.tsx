@@ -93,7 +93,7 @@ export default function DietOptionsPage() {
 			calcium: 1000,
 			sodium: 2300,
 		},
-		mealScope: "One Meal", // Default selection
+		mealScope: "One Day", // Default selection
 	});
 
 	const tabs = [
@@ -146,6 +146,7 @@ export default function DietOptionsPage() {
 	};
 
 	const handleSubmit = async () => {
+		// Ensure required fields are selected
 		if (!formData.selectedDiets.length) {
 			alert("Please select at least one diet option.");
 			return;
@@ -159,15 +160,40 @@ export default function DietOptionsPage() {
 			return;
 		}
 
+		// Build the API request payload with all form options
 		const requestBody = {
-			diet: formData.selectedDiets[0], // Use first selected diet
+			displayName: formData.displayName,
+			mealTimes: formData.mealTimes,
+			dietaryGoal: formData.dietaryGoal,
+			activityLevel: formData.activityLevel,
+			selectedDiets: formData.selectedDiets,
+			otherDiet: formData.otherDiet,
+			otherDietDetails: formData.otherDietDetails,
+			inclusions: formData.inclusions,
+			allergies: formData.allergies,
+			exclusions: formData.exclusions,
+
+			// User Options
+			weight: formData.weight,
+			height: formData.height,
+			sex: formData.sex,
+			priceRange: formData.priceRange,
+			prepTime: formData.prepTime,
+
+			// Customization
+			selectedGoals: formData.selectedGoals,
+			calorieLimit: formData.calorieLimit,
+			proteinRequirement: formData.proteinRequirement,
+			nutrients: formData.nutrients,
+			mealScope: formData.mealScope,
+
+			// Convert meal scope to number of days
 			days:
 				formData.mealScope === "One Week"
 					? 7
 					: formData.mealScope === "One Day"
 					? 1
-					: 3,
-			goals: formData.selectedGoals.join(", "),
+					: 3, // Default: 3 days
 		};
 
 		console.log("Sending request:", requestBody);
@@ -187,7 +213,7 @@ export default function DietOptionsPage() {
 
 			const data = await response.json();
 			console.log("API Response:", data);
-			setMealPlan(data); // 🆕 Store response in state
+			setMealPlan(data); // Store response in state
 		} catch (error) {
 			console.error("Error fetching data:", error);
 			alert("An error occurred while generating the meal plan.");
@@ -500,7 +526,7 @@ export default function DietOptionsPage() {
 							{/* Meal Scope */}
 							<h4 className="text-lg font-bold mt-4">Select Meal Scope</h4>
 							<div className="grid grid-cols-3 gap-6">
-								{["One Meal", "One Day", "One Week"].map((scope) => (
+								{["One Day", "Three Days", "One Week"].map((scope) => (
 									<label key={scope} className="flex items-center space-x-3">
 										<input
 											type="radio"
@@ -521,7 +547,9 @@ export default function DietOptionsPage() {
 
 			{mealPlan && (
 				<div className="mt-8 p-6 bg-accent-gray dark:bg-accent-beige rounded-3xl shadow-lg text-primary dark:text-dark text-center">
-					<h3 className="text-3xl tracking-widest font-bold">Generated Meal Plan</h3>
+					<h3 className="text-3xl tracking-widest font-bold">
+						Generated Meal Plan
+					</h3>
 					<div className="mt-4 p-4 bg-dark text-primary dark:bg-primary dark:text-dark rounded-lg">
 						{Object.keys(mealPlan).map((dayKey, dayIndex) => {
 							const day = mealPlan[dayKey] as Day; // Ensure 'day' follows the correct structure
@@ -538,7 +566,7 @@ export default function DietOptionsPage() {
 										return (
 											<div
 												key={mealIndex}
-												className="mt-4 p-4 bg-accent-green rounded-lg text-left text-dark" 
+												className="mt-4 p-4 bg-accent-green rounded-lg text-left text-dark"
 											>
 												<h4 className="text-2xl font-bold capitalize">
 													{mealType}: {meal.name}
