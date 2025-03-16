@@ -15,14 +15,14 @@ type FormDataType = {
 	allergies: string;
 	exclusions: string;
 
-	// 🆕 New Fields for User Options
+	// New Fields for User Options
 	weight: number;
 	height: number;
 	sex: string;
 	priceRange: number;
 	prepTime: number;
 
-	// 🆕 New Fields for Customization
+	// New Fields for Customization
 	selectedGoals: string[];
 	calorieLimit: number;
 	proteinRequirement: number;
@@ -36,11 +36,12 @@ type FormDataType = {
 	mealScope: string;
 };
 
-// 🌟 Main Component
+// Main Component
 export default function DietOptionsPage() {
 	const [activeTab, setActiveTab] = useState("user-options");
+	const [mealPlan, setMealPlan] = useState(null); // Store API response
 
-	// 🌟 State to store form data
+	// State to store form data
 	const [formData, setFormData] = useState<FormDataType>({
 		displayName: "",
 		mealTimes: [],
@@ -53,14 +54,14 @@ export default function DietOptionsPage() {
 		allergies: "",
 		exclusions: "",
 
-		// 🆕 Default values for User Options
+		// Default values for User Options
 		weight: 70, // Default weight in kg
 		height: 175, // Default height in cm
 		sex: "male", // Default selection
 		priceRange: 30, // Default price range
 		prepTime: 30, // Default meal prep time in minutes
 
-		// 🆕 Default values for Customization
+		// Default values for Customization
 		selectedGoals: [],
 		calorieLimit: 2000, // Default calorie intake
 		proteinRequirement: 100, // Default protein intake (grams)
@@ -80,10 +81,10 @@ export default function DietOptionsPage() {
 		{ id: "customization", label: "Customization" },
 	];
 
-	// 🌟 Handle tab switching
+	// Handle tab switching
 	const handleTabChange = (tab: string) => setActiveTab(tab);
 
-	// 🌟 Handle input changes
+	// Handle input changes
 	const handleChange = (
 		e: React.ChangeEvent<
 			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -101,7 +102,7 @@ export default function DietOptionsPage() {
 		}));
 	};
 
-	// 🌟 Handle multiple checkboxes (for Goals & Diets)
+	// Handle multiple checkboxes (for Goals & Diets)
 	const handleCheckboxChange = (
 		e: React.ChangeEvent<HTMLInputElement>,
 		category: keyof FormDataType
@@ -115,7 +116,7 @@ export default function DietOptionsPage() {
 		}));
 	};
 
-	// 🆕 Function to handle nutrient input changes
+	// Function to handle nutrient input changes
 	const handleNutrientChange = (nutrient: string, value: number) => {
 		setFormData((prev) => ({
 			...prev,
@@ -123,9 +124,7 @@ export default function DietOptionsPage() {
 		}));
 	};
 
-	// 🌟 Handle form submission (API call)
 	const handleSubmit = async () => {
-		// Ensure required values are selected
 		if (!formData.selectedDiets.length) {
 			alert("Please select at least one diet option.");
 			return;
@@ -139,7 +138,6 @@ export default function DietOptionsPage() {
 			return;
 		}
 
-		// Extract values from form data
 		const requestBody = {
 			diet: formData.selectedDiets[0], // Use first selected diet
 			days:
@@ -147,8 +145,8 @@ export default function DietOptionsPage() {
 					? 7
 					: formData.mealScope === "One Day"
 					? 1
-					: 3, // Convert mealScope to days
-			goals: formData.selectedGoals.join(", "), // Send selected goals as a comma-separated string
+					: 3,
+			goals: formData.selectedGoals.join(", "),
 		};
 
 		console.log("Sending request:", requestBody);
@@ -168,7 +166,7 @@ export default function DietOptionsPage() {
 
 			const data = await response.json();
 			console.log("API Response:", data);
-			alert("Generated meal plan received! Check console for details.");
+			setMealPlan(data); // 🆕 Store response in state
 		} catch (error) {
 			console.error("Error fetching data:", error);
 			alert("An error occurred while generating the meal plan.");
@@ -177,14 +175,14 @@ export default function DietOptionsPage() {
 
 	return (
 		<div className="relative min-h-screen bg-primary text-dark dark:bg-dark dark:text-primary flex flex-col items-center px-4 py-6">
-			{/* 🌟 Logo Placement */}
+			{/* Logo Placement */}
 			<img
 				src="/logo.png"
 				alt="SmartServe Logo"
 				className="w-16 h-16 absolute top-4 left-4"
 			/>
 
-			{/* 🌟 Header */}
+			{/* Header */}
 			<header className="w-full flex items-center justify-center px-6 lg:px-16 py-4">
 				<h1 className="text-3xl lg:text-4xl font-extrabold text-center">
 					SmartServe
@@ -193,9 +191,9 @@ export default function DietOptionsPage() {
 
 			<ThemeToggle />
 
-			{/* 🌟 Main Layout */}
+			{/* Main Layout */}
 			<div className="container mx-auto flex flex-col lg:flex-row w-full space-y-6 lg:space-x-6 lg:space-y-0 items-start">
-				{/* 🌟 Sidebar */}
+				{/* Sidebar */}
 				<div className="w-full lg:w-1/4 bg-dark dark:bg-primary p-6 rounded-3xl shadow-lg flex flex-col self-start shadow-lg">
 					<div className="space-y-4">
 						{tabs.map((tab) => (
@@ -213,7 +211,7 @@ export default function DietOptionsPage() {
 						))}
 					</div>
 
-					{/* 🌟 Submit Button */}
+					{/* Submit Button */}
 					<div className="mt-6">
 						<button
 							onClick={handleSubmit}
@@ -224,14 +222,14 @@ export default function DietOptionsPage() {
 					</div>
 				</div>
 
-				{/* 🌟 Form Section */}
+				{/* Form Section */}
 				<div className="w-full lg:flex-grow bg-dark text-primary dark:bg-primary dark:text-dark p-8 rounded-3xl shadow-lg flex flex-col shadow-lg">
 					<h2 className="text-3xl font-bold text-center mb-4">
 						{activeTab.replace("-", " ")}
 					</h2>
 					<hr className="border-t border-gray-500 dark:border-gray-700 mb-6" />
 
-					{/* 🌟 User Options */}
+					{/* User Options */}
 					{activeTab === "user-options" && (
 						<div>
 							<h3 className="text-2xl font-semibold mb-4">User Preferences</h3>
@@ -318,7 +316,7 @@ export default function DietOptionsPage() {
 						</div>
 					)}
 
-					{/* 🌟 Diet Options */}
+					{/* Diet Options */}
 					{activeTab === "diet-options" && (
 						<div>
 							<h3 className="text-2xl font-semibold">Select Your Diet</h3>
@@ -347,7 +345,7 @@ export default function DietOptionsPage() {
 								))}
 							</div>
 
-							{/* 🌟 Inclusions Section */}
+							{/* Inclusions Section */}
 							<div className="mt-6">
 								<h3 className="text-2xl font-semibold">Inclusions</h3>
 								<label className="block text-lg mt-2">
@@ -363,7 +361,7 @@ export default function DietOptionsPage() {
 								/>
 							</div>
 
-							{/* 🌟 Exclusions Section */}
+							{/* Exclusions Section */}
 							<div className="mt-6">
 								<h3 className="text-2xl font-semibold">Exclusions</h3>
 								<label className="block text-lg mt-2">Allergies</label>
@@ -390,7 +388,7 @@ export default function DietOptionsPage() {
 						</div>
 					)}
 
-					{/* 🌟 Customization */}
+					{/* Customization */}
 					{activeTab === "customization" && (
 						<div>
 							<h3 className="text-2xl font-semibold mb-4">
@@ -499,7 +497,18 @@ export default function DietOptionsPage() {
 					)}
 				</div>
 			</div>
-			{/* 🌟 Footer */}
+			
+			{/* Generated Meal Plan */}
+			{mealPlan && (
+				<div className="mt-8 p-6 bg-accent-gray dark:bg-accent-beige rounded-3xl shadow-lg">
+					<h3 className="text-2xl font-bold">Generated Meal Plan</h3>
+					<pre className="mt-4 p-4 bg-dark text-primary dark:bg-primary dark:text-dark rounded-lg">
+						{JSON.stringify(mealPlan, null, 2)}
+					</pre>
+				</div>
+			)}
+
+			{/* Footer */}
 			<footer className="w-full bg-accent-gray text-white dark:bg-accent-beige dark:text-dark text-center text-sm py-4 mt-8 rounded-t-3xl">
 				Powered by Google Gemini This project was developed by the SmartServe
 				team. All rights reserved. © 2025 SmartServe. The content, design, and
