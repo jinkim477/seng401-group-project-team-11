@@ -2,6 +2,27 @@
 import { useState } from "react";
 import ThemeToggle from "../components/ThemeToggle";
 
+type Meal = {
+	name: string;
+	ingredients: string[];
+	instructions: string;
+	prep_time: string;
+	macros: {
+		calories: string;
+		protein: string;
+		carbs: string;
+		fat: string;
+	};
+};
+
+type Day = {
+	[mealType: string]: Meal; // Meal types (e.g., breakfast, lunch, dinner)
+};
+
+type MealPlan = {
+	[dayKey: string]: Day; // Days (e.g., day1, day2)
+};
+
 // Define Form Data Type
 type FormDataType = {
 	displayName: string;
@@ -39,7 +60,7 @@ type FormDataType = {
 // Main Component
 export default function DietOptionsPage() {
 	const [activeTab, setActiveTab] = useState("user-options");
-	const [mealPlan, setMealPlan] = useState(null); // Store API response
+	const [mealPlan, setMealPlan] = useState<MealPlan | null>(null);
 
 	// State to store form data
 	const [formData, setFormData] = useState<FormDataType>({
@@ -497,14 +518,73 @@ export default function DietOptionsPage() {
 					)}
 				</div>
 			</div>
-			
-			{/* Generated Meal Plan */}
+
 			{mealPlan && (
-				<div className="mt-8 p-6 bg-accent-gray dark:bg-accent-beige rounded-3xl shadow-lg">
-					<h3 className="text-2xl font-bold">Generated Meal Plan</h3>
-					<pre className="mt-4 p-4 bg-dark text-primary dark:bg-primary dark:text-dark rounded-lg">
-						{JSON.stringify(mealPlan, null, 2)}
-					</pre>
+				<div className="mt-8 p-6 bg-accent-gray dark:bg-accent-beige rounded-3xl shadow-lg text-primary dark:text-dark text-center">
+					<h3 className="text-3xl tracking-widest font-bold">Generated Meal Plan</h3>
+					<div className="mt-4 p-4 bg-dark text-primary dark:bg-primary dark:text-dark rounded-lg">
+						{Object.keys(mealPlan).map((dayKey, dayIndex) => {
+							const day = mealPlan[dayKey] as Day; // Ensure 'day' follows the correct structure
+							console.log("Day Data:", day); // Debugging
+
+							return (
+								<div key={dayIndex} className="mb-6">
+									<h3 className="text-2xl font-semibold">Day {dayIndex + 1}</h3>
+
+									{/* Loop through meal types (breakfast, lunch, etc.) */}
+									{Object.keys(day).map((mealType, mealIndex) => {
+										const meal = day[mealType] as Meal; // Ensure 'mealType' is recognized
+
+										return (
+											<div
+												key={mealIndex}
+												className="mt-4 p-4 bg-accent-green rounded-lg text-left text-dark" 
+											>
+												<h4 className="text-2xl font-bold capitalize">
+													{mealType}: {meal.name}
+												</h4>
+
+												{/* Ingredients List */}
+												<h5 className="mt-2 font-semibold">Ingredients:</h5>
+												<ul className="list-disc list-inside ml-4">
+													{meal.ingredients.map((ingredient, index) => (
+														<li key={index}>{ingredient}</li>
+													))}
+												</ul>
+
+												{/* Instructions */}
+												<p className="mt-2">
+													<strong>Instructions:</strong> {meal.instructions}
+												</p>
+
+												{/* Prep Time */}
+												<p className="mt-2">
+													<strong>Prep Time:</strong> {meal.prep_time}
+												</p>
+
+												{/* Macros */}
+												<h5 className="mt-3 font-semibold">Macros:</h5>
+												<ul className="list-disc list-inside ml-4">
+													<li>
+														<strong>Calories:</strong> {meal.macros.calories}
+													</li>
+													<li>
+														<strong>Protein:</strong> {meal.macros.protein}
+													</li>
+													<li>
+														<strong>Carbs:</strong> {meal.macros.carbs}
+													</li>
+													<li>
+														<strong>Fat:</strong> {meal.macros.fat}
+													</li>
+												</ul>
+											</div>
+										);
+									})}
+								</div>
+							);
+						})}
+					</div>
 				</div>
 			)}
 

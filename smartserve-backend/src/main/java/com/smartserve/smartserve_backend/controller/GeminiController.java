@@ -11,7 +11,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/gemini")
-@CrossOrigin(origins = "*") // adjust this for security in production
+// @CrossOrigin(origins = "*") // adjust this for security in production
 public class GeminiController {
 
     @Value("${gemini.api.key}")
@@ -23,8 +23,14 @@ public class GeminiController {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @PostMapping("/generate")
-    public ResponseEntity<String> generateMealPlan(@RequestBody MealPlanRequest request) {
+    public ResponseEntity <String> generateMealPlan(@RequestBody MealPlanRequest request) {
         try {
+            System.out.println("Using API Key: " + geminiApiKey); // Debugging
+
+            // Ensure the key is set
+            if (geminiApiKey == null || geminiApiKey.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"API Key is missing\"}");
+            }
             // 1. Build prompt from input
             String prompt = buildPrompt(request);
 
@@ -38,7 +44,7 @@ public class GeminiController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                    .fromHttpUrl(GEMINI_API_URL)
+                    .fromUriString(GEMINI_API_URL)
                     .queryParam("key", geminiApiKey);
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
@@ -53,11 +59,13 @@ public class GeminiController {
             List<Map<String, String>> parts = (List<Map<String, String>>) responseContent.get("parts");
             String generatedText = parts.get(0).get("text");
 
+            generatedText = generatedText.replaceAll("^```json\\s*", "").replaceAll("```$", "").trim();
+
             return ResponseEntity.ok(generatedText);
         } catch (Exception e) {
             e.printStackTrace(); // for development
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error: " + e.getMessage());
+                .body("{\"error\": \"Error: " + e.getMessage() + "\"}");
         }
     }
 
@@ -66,6 +74,23 @@ public class GeminiController {
             Create a meal plan for %d day(s) with a %s diet. 
             The plan should support the following goals: %s. 
             Return meals organized by breakfast, lunch, and dinner for each day.
+            Your response must be formatted as JSON. I want the structure to be as follows:
+            {
+                "day": {
+                    "meal": {
+                        "name": "Meal Name",
+                        "ingredients": ["Ingredient 1", "Ingredient 2", "Ingredient 3"],
+                        "instructions": "Cooking instructions",
+                        "prep_time": "Preparation time",
+                        "macros" : {
+                            "calories": "Calories",
+                            "protein": "Protein",
+                            "carbs": "Carbs",
+                            "fat": "Fat"
+                        }
+                    }
+                }
+            }
             """, req.getDays(), req.getDiet(), req.getGoals());
     }
 }
