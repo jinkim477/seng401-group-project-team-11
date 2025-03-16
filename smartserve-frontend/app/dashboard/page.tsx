@@ -132,9 +132,11 @@ export default function DietOptionsPage() {
 	return (
 		<div className="relative min-h-screen bg-primary text-dark dark:bg-dark dark:text-primary flex flex-col items-center px-4 py-6">
 			{/* 🌟 Logo Placement */}
-			<img src="/logo.png" alt="SmartServe Logo" className="w-16 h-16 absolute top-4 left-4" />
-
-
+			<img
+				src="/logo.png"
+				alt="SmartServe Logo"
+				className="w-16 h-16 absolute top-4 left-4"
+			/>
 
 			{/* 🌟 Header */}
 			<header className="w-full flex items-center justify-center px-6 lg:px-16 py-4">
@@ -452,18 +454,14 @@ export default function DietOptionsPage() {
 				</div>
 			</div>
 			{/* 🌟 Footer */}
-<footer className="w-full bg-accent-gray text-white dark:bg-accent-beige dark:text-dark text-center text-sm py-4 mt-8 rounded-t-3xl">
-Powered by Google Gemini
-
-This project was developed by the SmartServe team. 
-
-All rights reserved. © 2025 SmartServe.
-
-The content, design, and functionality are the intellectual property of SmartServe and may not be reproduced without permission.
-
-Google Gemini provides AI-powered assistance for generating insights, enhancing functionality, and improving user experience.
-</footer>
-
+			<footer className="w-full bg-accent-gray text-white dark:bg-accent-beige dark:text-dark text-center text-sm py-4 mt-8 rounded-t-3xl">
+				Powered by Google Gemini This project was developed by the SmartServe
+				team. All rights reserved. © 2025 SmartServe. The content, design, and
+				functionality are the intellectual property of SmartServe and may not be
+				reproduced without permission. Google Gemini provides AI-powered
+				assistance for generating insights, enhancing functionality, and
+				improving user experience.
+			</footer>
 		</div>
 	);
 }
