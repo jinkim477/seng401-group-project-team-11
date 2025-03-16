@@ -150,7 +150,7 @@ export default function DietOptionsPage() {
 			{/* 🌟 Main Layout */}
 			<div className="container mx-auto flex flex-col lg:flex-row w-full space-y-6 lg:space-x-6 lg:space-y-0 items-start">
 				{/* 🌟 Sidebar */}
-				<div className="w-full lg:w-1/4 bg-dark dark:bg-primary p-6 rounded-3xl shadow-lg flex flex-col self-start">
+				<div className="w-full lg:w-1/4 bg-dark dark:bg-primary p-6 rounded-3xl shadow-lg flex flex-col self-start shadow-lg">
 					<div className="space-y-4">
 						{tabs.map((tab) => (
 							<button
@@ -179,7 +179,7 @@ export default function DietOptionsPage() {
 				</div>
 
 				{/* 🌟 Form Section */}
-				<div className="w-full lg:flex-grow bg-dark text-primary dark:bg-primary dark:text-dark p-8 rounded-3xl shadow-lg flex flex-col">
+				<div className="w-full lg:flex-grow bg-dark text-primary dark:bg-primary dark:text-dark p-8 rounded-3xl shadow-lg flex flex-col shadow-lg">
 					<h2 className="text-3xl font-bold text-center mb-4">
 						{activeTab.replace("-", " ")}
 					</h2>

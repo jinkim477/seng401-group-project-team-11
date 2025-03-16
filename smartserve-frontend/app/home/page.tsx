@@ -42,19 +42,19 @@ export default function HomePage() {
 					<div className="relative w-full max-w-md space-y-14 ml-16 mt-12">
 						<button
 							onClick={() => router.push("/login")}
-							className="w-full max-w-lg bg-dark text-primary dark:bg-primary dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition"
+							className="w-full max-w-lg bg-dark text-primary dark:bg-primary dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition shadow-lg"
 						>
 							Login
 						</button>
 						<button
 							onClick={() => router.push("/register")}
-							className="w-full max-w-lg bg-accent-gray text-primary dark:bg-accent-beige dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[140px] lg:left-[180px] hover:scale-105 transition"
+							className="w-full max-w-lg bg-accent-gray text-primary dark:bg-accent-beige dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[140px] lg:left-[180px] hover:scale-105 transition shadow-lg"
 						>
 							Register
 						</button>
 						<button 
                             onClick={() => router.push("/dashboard")}
-                            className="w-full max-w-lg bg-accent-green text-dark dark:bg-accent-green dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition">
+                            className="w-full max-w-lg bg-accent-green text-dark dark:bg-accent-green dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition shadow-lg">
 							Continue as Guest
 						</button>
 					</div>
