@@ -2,7 +2,7 @@
 import { useState } from "react";
 import ThemeToggle from "../components/ThemeToggle";
 
-// 🌟 Define Form Data Type
+// Define Form Data Type
 type FormDataType = {
 	displayName: string;
 	mealTimes: string[];
