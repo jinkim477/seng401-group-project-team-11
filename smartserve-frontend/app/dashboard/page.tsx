@@ -61,6 +61,7 @@ type FormDataType = {
 export default function DietOptionsPage() {
 	const [activeTab, setActiveTab] = useState("user-options");
 	const [mealPlan, setMealPlan] = useState<MealPlan | null>(null);
+	const [loading, setLoading] = useState(false);
 
 	// State to store form data
 	const [formData, setFormData] = useState<FormDataType>({
@@ -189,6 +190,7 @@ export default function DietOptionsPage() {
 		};
 
 		console.log("Sending request:", requestBody);
+		setLoading(true);
 
 		try {
 			const response = await fetch("http://localhost:8080/gemini/generate", {
@@ -209,6 +211,8 @@ export default function DietOptionsPage() {
 		} catch (error) {
 			console.error("Error fetching data:", error);
 			alert("An error occurred while generating the meal plan.");
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -258,6 +262,13 @@ export default function DietOptionsPage() {
 						>
 							Generate
 						</button>
+					</div>
+					<div>
+						{loading && (
+							<p className="text-center text-lg mt-4 text-green-500 font-semibold">
+								Generating meal plan...
+							</p>
+						)}
 					</div>
 				</div>
 
