@@ -566,6 +566,14 @@ export default function DietOptionsPage() {
 									{Object.keys(day).map((mealType, mealIndex) => {
 										const meal = day[mealType] as Meal; // Ensure 'mealType' is recognized
 
+										// ✅ Ensure meal exists before rendering
+										if (!meal || !meal.ingredients) {
+											console.warn(
+												`Skipping meal type ${mealType} due to missing data.`
+											);
+											return null;
+										}
+										
 										return (
 											<div
 												key={mealIndex}
