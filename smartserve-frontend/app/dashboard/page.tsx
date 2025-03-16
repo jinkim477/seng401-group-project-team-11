@@ -123,10 +123,56 @@ export default function DietOptionsPage() {
 		}));
 	};
 
-	// 🌟 Handle form submission
-	const handleSubmit = () => {
-		console.log("Form Data:", formData); // Now includes all new fields!
-		alert("Form data submitted! Check console for values.");
+	// 🌟 Handle form submission (API call)
+	const handleSubmit = async () => {
+		// Ensure required values are selected
+		if (!formData.selectedDiets.length) {
+			alert("Please select at least one diet option.");
+			return;
+		}
+		if (!formData.mealScope) {
+			alert("Please select a meal scope (One Meal, One Day, One Week).");
+			return;
+		}
+		if (!formData.selectedGoals.length) {
+			alert("Please select at least one goal.");
+			return;
+		}
+
+		// Extract values from form data
+		const requestBody = {
+			diet: formData.selectedDiets[0], // Use first selected diet
+			days:
+				formData.mealScope === "One Week"
+					? 7
+					: formData.mealScope === "One Day"
+					? 1
+					: 3, // Convert mealScope to days
+			goals: formData.selectedGoals.join(", "), // Send selected goals as a comma-separated string
+		};
+
+		console.log("Sending request:", requestBody);
+
+		try {
+			const response = await fetch("http://localhost:8080/gemini/generate", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(requestBody),
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			const data = await response.json();
+			console.log("API Response:", data);
+			alert("Generated meal plan received! Check console for details.");
+		} catch (error) {
+			console.error("Error fetching data:", error);
+			alert("An error occurred while generating the meal plan.");
+		}
 	};
 
 	return (
