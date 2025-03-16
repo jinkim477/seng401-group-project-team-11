@@ -147,16 +147,8 @@ export default function DietOptionsPage() {
 
 	const handleSubmit = async () => {
 		// Ensure required fields are selected
-		if (!formData.selectedDiets.length) {
-			alert("Please select at least one diet option.");
-			return;
-		}
 		if (!formData.mealScope) {
 			alert("Please select a meal scope (One Meal, One Day, One Week).");
-			return;
-		}
-		if (!formData.selectedGoals.length) {
-			alert("Please select at least one goal.");
 			return;
 		}
 
