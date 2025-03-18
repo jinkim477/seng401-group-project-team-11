@@ -111,7 +111,7 @@ const initialFormData: FormDataType = {
 
 // Main Component
 export default function DietOptionsPage() {
-    const [activeTab, setActiveTab] = useState("user-options");
+    const [activeTab, setActiveTab] = useState("User-Options");
     const [mealPlan, setMealPlan] = useState<MealPlan | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -119,9 +119,9 @@ export default function DietOptionsPage() {
     const [formData, setFormData] = useState<FormDataType>(initialFormData);
 
     const tabs = [
-        { id: "user-options", label: "User Options" },
-        { id: "diet-options", label: "Diet Options" },
-        { id: "customization", label: "Customization" },
+        { id: "User-Options", label: "User Options" },
+        { id: "Diet-Options", label: "Diet Options" },
+        { id: "Customization", label: "Customization" },
     ];
 
     // Handle tab switching
@@ -145,19 +145,34 @@ export default function DietOptionsPage() {
         }));
     };
 
-    // Handle multiple checkboxes (for Goals & Diets)
     const handleCheckboxChange = (
         e: React.ChangeEvent<HTMLInputElement>,
         category: keyof FormDataType
-    ) => {
+      ) => {
         const { value, checked } = e.target;
-        setFormData((prev) => ({
+      
+        setFormData((prev) => {
+          let updatedGoals = [...prev[category] as string[]];
+      
+          if (checked) {
+            // Prevent selecting both "Bulking" and "Cutting" at the same time
+            if (value === "Bulking") {
+              updatedGoals = updatedGoals.filter(goal => goal !== "Cutting");
+            } else if (value === "Cutting") {
+              updatedGoals = updatedGoals.filter(goal => goal !== "Bulking");
+            }
+      
+            updatedGoals.push(value);
+          } else {
+            updatedGoals = updatedGoals.filter(goal => goal !== value);
+          }
+      
+          return {
             ...prev,
-            [category]: checked
-                ? [...(prev[category] as string[]), value]
-                : (prev[category] as string[]).filter((item) => item !== value),
-        }));
-    };
+            [category]: updatedGoals,
+          };
+        });
+      };
 
     // Function to handle nutrient input changes
     const handleNutrientChange = (nutrient: string, value: number) => {
@@ -167,10 +182,59 @@ export default function DietOptionsPage() {
         }));
     };
 
+    const validateFormData = (data: FormDataType) => {
+        const errors: { [key: string]: string } = {};
+    
+        if (data.weight < 15 || data.weight > 300) {
+            errors.weight = "Weight must be between 15 and 300 kg.";
+        }
+        if (data.height < 30 || data.height > 300) {
+            errors.height = "Height must be between 30 and 300 cm.";
+        }
+        if (data.prepTime < 0 || data.prepTime > 60) {
+            errors.prepTime = "Prep time must be between 0 and 60 minutes.";
+        }
+        if (data.cookTime < 0 || data.cookTime > 180) {
+            errors.cookTime = "Cook time must be between 0 and 180 minutes.";
+        }
+        if (data.priceRange < 5 || data.priceRange > 100) {
+            errors.priceRange = "Price range must be between 5 and 100.";
+        }
+        if (data.calorieLimit < 1000 || data.calorieLimit > 5000) {
+            errors.calorieLimit = "Calorie limit must be between 1000 and 5000.";
+        }
+        if (data.proteinRequirement < 25 || data.proteinRequirement > 500) {
+            errors.proteinRequirement = "Protein requirement must be between 25 and 500 grams.";
+        }
+        if (data.nutrients.potassium < 0 || data.nutrients.potassium > 10000) {
+            errors.potassium = "Potassium must be between 0 and 10000 mg.";
+        }
+        if (data.nutrients.phosphorus < 0 || data.nutrients.phosphorus > 10000) {
+            errors.phosphorus = "Phosphorus must be between 0 and 10000 mg.";
+        }
+        if (data.nutrients.vitamins < 0 || data.nutrients.vitamins > 10000) {
+            errors.vitamins = "Vitamins must be between 0 and 10000 mg.";
+        }
+        if (data.nutrients.calcium < 0 || data.nutrients.calcium > 10000) {
+            errors.calcium = "Calcium must be between 0 and 10000 mg.";
+        }
+        if (data.nutrients.sodium < 0 || data.nutrients.sodium > 10000) {
+            errors.sodium = "Sodium must be between 0 and 10000 mg.";
+        }
+    
+        return errors;
+    };
+
     const handleSubmit = async () => {
         // Ensure required fields are selected
         if (!formData.mealScope) {
             alert("Please select a meal scope (One Day, Three Days, One Week).");
+            return;
+        }
+        
+        const errors = validateFormData(formData);
+        if (Object.keys(errors).length > 0) {
+            alert("Please correct the following errors:\n" + JSON.stringify(errors, null, 2));
             return;
         }
 
@@ -240,7 +304,7 @@ export default function DietOptionsPage() {
                     <hr className="border-t border-gray-500 dark:border-gray-700 mb-6" />
 
                     {/* User Options */}
-                    {activeTab === "user-options" && (
+                    {activeTab === "User-Options" && (
                         <UserOptions
                             formData={formData}
                             handleChange={handleChange}
@@ -249,7 +313,7 @@ export default function DietOptionsPage() {
                     )}
 
                     {/* Diet Options */}
-                    {activeTab === "diet-options" && (
+                    {activeTab === "Diet-Options" && (
                         <DietOptions
                             formData={formData}
                             handleChange={handleChange}
@@ -258,7 +322,7 @@ export default function DietOptionsPage() {
                     )}
 
                     {/* Customization */}
-                    {activeTab === "customization" && (
+                    {activeTab === "Customization" && (
                         <Customization
                             formData={formData}
                             handleChange={handleChange}
