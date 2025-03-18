@@ -2,6 +2,7 @@ package com.smartserve.smartserve_backend.controller;
 
 import com.smartserve.smartserve_backend.model.User;
 import com.smartserve.smartserve_backend.repository.UserRepository;
+import com.smartserve.smartserve_backend.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class AuthController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     // Registration endpoint
     @PostMapping("/register")
     public String registerUser(@RequestBody User user) {
@@ -26,6 +30,8 @@ public class AuthController {
         // Encrypt the password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        // Send registration email
+        emailService.sendRegistrationEmail(user.getEmail(), "Registration Successful", "Thank you for registering!");
         return "User registered successfully";
     }
 
