@@ -25,6 +25,7 @@ public class MealPlanRequest {
     private String sex;
     private int priceRange;
     private int prepTime;
+    private int cookTime;
 
     // Customization
     private List<String> selectedGoals;

@@ -58,8 +58,12 @@ const CustomizationOptions: React.FC<CustomizationProps> = ({
 				value={formData.calorieLimit}
 				onChange={(e) =>
 					handleChange({
-						...formData,
-						calorieLimit: parseInt(e.target.value),
+						...e,
+						target: {
+							...e.target,
+							name: "calorieLimit",
+							value: parseInt(e.target.value),
+						},
 					})
 				}
 				className="w-full cursor-pointer"
@@ -72,6 +76,8 @@ const CustomizationOptions: React.FC<CustomizationProps> = ({
 			<input
 				type="number"
 				name="proteinRequirement"
+				min="25"
+        		max="500"
 				value={formData.proteinRequirement}
 				onChange={handleChange}
 				className="w-full p-4 rounded-lg bg-accent-gray text-white dark:bg-accent-beige dark:text-dark"
@@ -87,6 +93,8 @@ const CustomizationOptions: React.FC<CustomizationProps> = ({
 						</label>
 						<input
 							type="number"
+							min="0"
+        					max="10000"
 							value={
 								formData.nutrients[nutrient as keyof typeof formData.nutrients]
 							}
