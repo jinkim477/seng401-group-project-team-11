@@ -8,6 +8,7 @@ import DietOptions from "../components/DietOptions";
 import Customization from "../components/Customization";
 import MealPlanDisplay from "../components/MealPlanDisplay";
 import Footer from "../components/Footer";
+import AuthButtons from "../components/AuthButtons"; //
 
 const API_URL = "http://localhost:8080/gemini/generate";
 
@@ -51,6 +52,7 @@ type FormDataType = {
     sex: string;
     priceRange: number;
     prepTime: number;
+    cookTime: number;
 
     // New Fields for Customization
     selectedGoals: string[];
@@ -90,6 +92,7 @@ const initialFormData: FormDataType = {
     sex: "male", // Default selection
     priceRange: 30, // Default price range
     prepTime: 30, // Default meal prep time in minutes
+    cookTime: 30, // Default meal prep time in minutes
 
     // Default values for Customization
     selectedGoals: [],
@@ -212,6 +215,8 @@ export default function DietOptionsPage() {
         <div className="relative min-h-screen bg-primary text-dark dark:bg-dark dark:text-primary flex flex-col items-center px-4 py-6">
             {/* Logo Placement */}
             <LogoHeader />
+
+            <AuthButtons />
 
             <ThemeToggle />
 

@@ -46,6 +46,10 @@ const MealPlanDisplay: React.FC<MealPlanDisplayProps> = ({ mealPlan }) => {
                     <p className="mt-2">
                       <strong>Prep Time:</strong> {meal.prep_time}
                     </p>
+                    
+                    <p className='mt-2'>
+                      <strong>Cook Time:</strong> {meal.cook_time}
+                    </p>
 
                     <h5 className="mt-3 font-semibold">Macros:</h5>
                     <ul className="list-disc list-inside ml-4">
