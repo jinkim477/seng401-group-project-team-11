@@ -96,6 +96,7 @@ public class GeminiController {
                 - Activity Level: %s
                 - Price Range: Up to $%d per meal
                 - Meal Prep Time Limit: %d minutes
+                - Cooking Time Limit: %d minutes
                 - Preferred Meal Times: %s
                 - Dietary Goal: %s
                 - Inclusions: %s
@@ -119,9 +120,11 @@ public class GeminiController {
                     "day": {
                         "meal": {
                             "name": "Meal Name",
+                            "price": "Price",
                             "ingredients": ["Ingredient 1", "Ingredient 2", "Ingredient 3"],
                             "instructions": "Cooking instructions",
                             "prep_time": "Preparation time",
+                            "cook_time": "Cooking time",
                             "macros": {
                                 "calories": "Calories",
                                 "protein": "Protein",
@@ -140,6 +143,7 @@ public class GeminiController {
                 req.getActivityLevel().isEmpty() ? "Did not specify" : req.getActivityLevel(),
                 req.getPriceRange(),
                 req.getPrepTime(),
+                req.getCookTime(),
                 req.getMealTimes().isEmpty() ? "Anytime" : String.join(", ", req.getMealTimes()),
                 req.getDietaryGoal().isEmpty() ? "No preference" : req.getDietaryGoal(),
                 req.getInclusions().isEmpty() ? "No preferences" : req.getInclusions(),

@@ -58,8 +58,12 @@ const CustomizationOptions: React.FC<CustomizationProps> = ({
 				value={formData.calorieLimit}
 				onChange={(e) =>
 					handleChange({
-						...formData,
-						calorieLimit: parseInt(e.target.value),
+						...e,
+						target: {
+							...e.target,
+							name: "calorieLimit",
+							value: parseInt(e.target.value),
+						},
 					})
 				}
 				className="w-full cursor-pointer"

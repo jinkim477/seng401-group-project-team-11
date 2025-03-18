@@ -15,7 +15,7 @@ const AuthButtons = () => {
     const handleLogout = () => {
         localStorage.removeItem("auth-token"); // Remove auth-token
         setIsLoggedIn(false);
-        router.push("/login"); // Redirect to login page
+        router.push("/home"); // Redirect to home page
     };
 
     // Handle Show Previous Meals

@@ -14,6 +14,7 @@ const API_URL = "http://localhost:8080/gemini/generate";
 
 type Meal = {
     name: string;
+    price: string;
     ingredients: string[];
     instructions: string;
     prep_time: string;
@@ -92,7 +93,7 @@ const initialFormData: FormDataType = {
     sex: "male", // Default selection
     priceRange: 30, // Default price range
     prepTime: 30, // Default meal prep time in minutes
-    cookTime: 30, // Default meal prep time in minutes
+    cookTime: 60, // Default meal cook time in minutes
 
     // Default values for Customization
     selectedGoals: [],
