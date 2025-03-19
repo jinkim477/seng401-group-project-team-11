@@ -1,5 +1,10 @@
 package com.smartserve.smartserve_backend.model;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,4 +32,8 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GeneratedMealPlan> mealPlans;
 }

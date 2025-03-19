@@ -6,7 +6,7 @@ const AboutUs = () => {
 			<h3 className="text-3xl font-semibold mt-2 mb-4">About SmartServe</h3>
 			<hr className="border-1 border-primary dark:border-dark mb-4 mx-auto w-11/12" />
 
-			<p className="px-4 text-lg mx-6">
+			<p className="px-4 text-lg mx-2 lg:mx-6">
 				<span className="font-bold text-2xl">At SmartServe,</span> we believe
 				that{" "}
 				<span className="text-accent-green dark:text-green-700">

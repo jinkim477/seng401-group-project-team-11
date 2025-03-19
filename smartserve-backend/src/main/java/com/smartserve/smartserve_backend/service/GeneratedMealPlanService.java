@@ -12,7 +12,7 @@ import com.smartserve.smartserve_backend.repository.GeneratedMealPlanRepository;
 
 @Service
 public class GeneratedMealPlanService {
-    
+
     @Autowired
     private GeneratedMealPlanRepository generatedMealPlanRepository;
 

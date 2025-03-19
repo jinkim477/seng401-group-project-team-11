@@ -10,7 +10,9 @@ export default function HomePage() {
 	return (
 		<div className="relative min-h-screen bg-primary text-dark dark:bg-dark dark:text-primary flex flex-col items-center px-6 py-10">
 			{/* Dark Mode Toggle */}
-			<ThemeToggle />
+			<div className="w-full flex justify-end">
+				<ThemeToggle />
+			</div>
 
 			<div className="container mx-auto flex flex-col lg:flex-row items-center lg:justify-between overflow-hidden">
 				{/* Left Side - Hero Image (Partially Visible) */}
@@ -53,9 +55,10 @@ export default function HomePage() {
 						>
 							Register
 						</button>
-						<button 
+						<button
 							onClick={() => router.push("/dashboard")}
-							className="w-full max-w-lg bg-accent-green text-dark dark:bg-accent-green dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition shadow-lg">
+							className="w-full max-w-lg bg-accent-green text-dark dark:bg-accent-green dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition shadow-lg"
+						>
 							Continue as Guest
 						</button>
 					</div>
@@ -67,17 +70,20 @@ export default function HomePage() {
 						{
 							name: "Emily R.",
 							text: "This app completely changed how I plan my meals! The personalized recipes are spot-on, and the clear instructions save me so much time. Highly recommend it!",
-							image: "https://png.pngtree.com/png-vector/20231116/ourmid/pngtree-young-adult-woman-headshot-portrait-on-white-view-png-image_10552273.png",
+							image:
+								"https://png.pngtree.com/png-vector/20231116/ourmid/pngtree-young-adult-woman-headshot-portrait-on-white-view-png-image_10552273.png",
 						},
 						{
 							name: "James L.",
 							text: "I love how easy it is to find meals that fit my dietary preferences. The interface is clean, and the AI-generated meal plans are surprisingly accurate!",
-							image: "https://www.theheadshotguy.co.uk/wp-content/uploads/2022/10/DDSS_JC_1205_1266-1024x819.png",
+							image:
+								"https://www.theheadshotguy.co.uk/wp-content/uploads/2022/10/DDSS_JC_1205_1266-1024x819.png",
 						},
 						{
 							name: "Sophia M.",
 							text: "Finally, an app that makes healthy eating simple and enjoyable. The detailed nutrition breakdown and step-by-step recipes are fantastic!",
-							image: "https://png.pngtree.com/png-vector/20230929/ourmid/pngtree-beautiful-young-woman-headshot-8-glamorous-png-image_10047502.png",
+							image:
+								"https://png.pngtree.com/png-vector/20230929/ourmid/pngtree-beautiful-young-woman-headshot-8-glamorous-png-image_10047502.png",
 						},
 					].map((review, index) => (
 						<div
