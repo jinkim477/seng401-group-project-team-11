@@ -11,4 +11,6 @@ import com.smartserve.smartserve_backend.model.User;
 @Repository
 public interface GeneratedMealPlanRepository extends JpaRepository<GeneratedMealPlan, Long> {
     List<GeneratedMealPlan> findByUserId(Long userId);
+
+    List<Long> deleteByUserId(Long userId);
 }

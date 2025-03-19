@@ -1,12 +1,14 @@
 package com.smartserve.smartserve_backend.controller;
 
 import com.smartserve.smartserve_backend.model.User;
+import com.smartserve.smartserve_backend.repository.GeneratedMealPlanRepository;
 import com.smartserve.smartserve_backend.repository.UserRepository;
 import com.smartserve.smartserve_backend.service.EmailService;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,10 +24,23 @@ public class AuthController {
     private UserRepository userRepository;
 
     @Autowired
+    private GeneratedMealPlanRepository mealPlanRepository;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private EmailService emailService;
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new RuntimeException("User not found");
+        }
+        List<Long> deletedMealPlans = mealPlanRepository.deleteByUserId(userId);
+        userRepository.deleteById(userId);
+        return ResponseEntity.ok("User deleted successfully along with " + deletedMealPlans.size() + " meal plans");
+    }
 
     // Registration endpoint
     @PostMapping("/register")

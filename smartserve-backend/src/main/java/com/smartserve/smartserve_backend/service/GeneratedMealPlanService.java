@@ -12,7 +12,7 @@ import com.smartserve.smartserve_backend.repository.GeneratedMealPlanRepository;
 
 @Service
 public class GeneratedMealPlanService {
-    
+
     @Autowired
     private GeneratedMealPlanRepository generatedMealPlanRepository;
 
@@ -25,5 +25,9 @@ public class GeneratedMealPlanService {
     // Retrieve AI responses for a user
     public List<GeneratedMealPlan> getUserMealPlans(Long userId) {
         return generatedMealPlanRepository.findByUserId(userId);
+    }
+
+    public List<Long> deleteMealPlans(Long userId) {
+        return generatedMealPlanRepository.deleteByUserId(userId);
     }
 }
