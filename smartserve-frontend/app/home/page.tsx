@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import ThemeToggle from "../components/ThemeToggle";
 import Image from "next/image";
@@ -53,8 +54,8 @@ export default function HomePage() {
 							Register
 						</button>
 						<button 
-                            onClick={() => router.push("/dashboard")}
-                            className="w-full max-w-lg bg-accent-green text-dark dark:bg-accent-green dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition shadow-lg">
+							onClick={() => router.push("/dashboard")}
+							className="w-full max-w-lg bg-accent-green text-dark dark:bg-accent-green dark:text-dark py-5 rounded-full shadow-xl text-xl font-bold relative left-[120px] lg:left-[160px] hover:scale-105 transition shadow-lg">
 							Continue as Guest
 						</button>
 					</div>
@@ -66,24 +67,38 @@ export default function HomePage() {
 						{
 							name: "Emily R.",
 							text: "This app completely changed how I plan my meals! The personalized recipes are spot-on, and the clear instructions save me so much time. Highly recommend it!",
+							image: "https://png.pngtree.com/png-vector/20231116/ourmid/pngtree-young-adult-woman-headshot-portrait-on-white-view-png-image_10552273.png",
 						},
 						{
 							name: "James L.",
 							text: "I love how easy it is to find meals that fit my dietary preferences. The interface is clean, and the AI-generated meal plans are surprisingly accurate!",
+							image: "https://www.theheadshotguy.co.uk/wp-content/uploads/2022/10/DDSS_JC_1205_1266-1024x819.png",
 						},
 						{
 							name: "Sophia M.",
 							text: "Finally, an app that makes healthy eating simple and enjoyable. The detailed nutrition breakdown and step-by-step recipes are fantastic!",
+							image: "https://png.pngtree.com/png-vector/20230929/ourmid/pngtree-beautiful-young-woman-headshot-8-glamorous-png-image_10047502.png",
 						},
 					].map((review, index) => (
 						<div
 							key={index}
 							className="flex items-center bg-accent-beige dark:bg-accent-gray p-6 rounded-xl shadow-lg max-w-lg"
 						>
-							{/* Profile Placeholder */}
-							<div className="w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
-								{review.name.charAt(0)} {/* First Letter of Name */}
-							</div>
+							{/* Profile Image for Emily R. */}
+							{review.image ? (
+								<Image
+									src={review.image}
+									alt={review.name}
+									width={80}
+									height={80}
+									className="w-32 h-32 rounded-xl object-cover mr-4"
+								/>
+							) : (
+								/* Placeholder Avatar for Others */
+								<div className="w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+									{review.name.charAt(0)}
+								</div>
+							)}
 
 							{/* Review Content */}
 							<div>
