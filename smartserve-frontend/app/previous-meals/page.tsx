@@ -83,11 +83,11 @@ export default function MealHistoryPage() {
     return (
         <div className="relative min-h-screen bg-primary text-dark dark:bg-dark dark:text-primary flex flex-col items-center px-4 py-6">
             {/* Logo Placement */}
-            <LogoHeader />
-
-            <AuthButtons />
-
-            <ThemeToggle />
+            <div className="flex items-center justify-between w-full px-6 pt-2 pb-8">
+                <LogoHeader />
+                <AuthButtons />
+                <ThemeToggle />
+            </div>
 
             {/* Main Layout */}
             <div className="container mx-auto flex flex-col lg:flex-row w-full space-y-6 lg:space-x-6 lg:space-y-0 items-start">

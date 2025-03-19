@@ -26,7 +26,7 @@ const AuthButtons = () => {
 	};
 
 	return (
-		<div className="absolute top-4 right-16 flex items-right space-x-3 sm:space-x-4 md:space-x-5 lg:space-x-6">
+		<div className="absolute right-16 flex pr-3 items-right space-x-3 sm:space-x-4 md:space-x-5 lg:space-x-6">
 			{!isLoggedIn ? (
 				<button
 					onClick={() => handleNavigate("/login")}
@@ -47,7 +47,7 @@ const AuthButtons = () => {
 								height="20"
 								viewBox="0 0 24 24"
 								fill="none"
-								stroke="#494949"
+								className="stroke-primary dark:stroke-dark"
 								strokeWidth="2"
 								strokeLinecap="round"
 								strokeLinejoin="round"
@@ -60,9 +60,23 @@ const AuthButtons = () => {
 					) : pathname === "/previous-meals" ? (
 						<button
 							onClick={() => handleNavigate("/dashboard")}
-							className="px-3 py-1 sm:px-4 sm:py-2 bg-green-500 text-dark rounded-lg hover:bg-green-600 transition shadow-md hover:shadow-lg hover:scale-110"
+							className="px-3 py-1 sm:px-4 sm:py-2 bg-accent-green text-dark rounded-lg hover:bg-green-500 transition flex items-center space-x-2 shadow-md hover:shadow-lg hover:scale-110"
 						>
-							⬅️ Return to Dashboard
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="none"
+								className="stroke-primary dark:stroke-dark"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+                                style={{ marginRight: '8px'}}
+							>
+								<path d="M19 12H6M12 5l-7 7 7 7" />
+							</svg>
+							Return to Dashboard
 						</button>
 					) : null}
 
