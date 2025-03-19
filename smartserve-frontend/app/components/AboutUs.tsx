@@ -2,7 +2,7 @@ import React from "react";
 
 const AboutUs = () => {
 	return (
-		<div className="w-full bg-dark dark:bg-primary text-primary dark:text-dark text-center text-sm py-4 mt-8 rounded-3xl shadow-sm">
+		<div className="w-11/12 bg-dark dark:bg-primary text-primary dark:text-dark text-center text-sm py-4 mt-8 rounded-3xl shadow-sm">
 			<h3 className="text-3xl font-semibold mt-2 mb-4">About SmartServe</h3>
 			<hr className="border-1 border-primary dark:border-dark mb-4 mx-auto w-11/12" />
 			<p className="px-4 text-lg">
