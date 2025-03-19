@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 
 interface DietOptionsProps {
@@ -45,7 +46,7 @@ const DietOptions: React.FC<DietOptionsProps> = ({ formData, handleChange, handl
           name="inclusions"
           value={formData.inclusions}
           onChange={handleChange}
-          className="w-full mt-2 p-4 rounded-lg bg-accent-gray text-white dark:bg-accent-beige dark:text-dark"
+          className="w-full mt-2 p-4 rounded-lg bg-accent-gray dark:bg-accent-beige text-white dark:text-black placeholder-accent-beige dark:placeholder-accent-gray"
           placeholder="Enter a list of ingredients you have readily available:"
           rows={3}
         />
@@ -59,7 +60,7 @@ const DietOptions: React.FC<DietOptionsProps> = ({ formData, handleChange, handl
           name="allergies"
           value={formData.allergies}
           onChange={handleChange}
-          className="w-full mt-2 p-4 rounded-lg bg-accent-gray text-white dark:bg-accent-beige dark:text-dark"
+          className="w-full mt-2 p-4 rounded-lg bg-accent-gray text-white dark:bg-accent-beige dark:text-dark placeholder-accent-beige dark:placeholder-accent-gray"
           placeholder="Enter a list of allergies:"
           rows={3}
         />
@@ -70,7 +71,7 @@ const DietOptions: React.FC<DietOptionsProps> = ({ formData, handleChange, handl
           name="exclusions"
           value={formData.exclusions}
           onChange={handleChange}
-          className="w-full mt-2 p-4 rounded-lg bg-accent-gray text-white dark:bg-accent-beige dark:text-dark"
+          className="w-full mt-2 p-4 rounded-lg bg-accent-gray text-white dark:bg-accent-beige dark:text-dark placeholder-accent-beige dark:placeholder-accent-gray"
           placeholder="Enter a list of foods you do not want to eat:"
           rows={3}
         />

@@ -1,5 +1,6 @@
-"use client"
+"use client";
 
+import React from "react";
 import { useEffect, useState } from "react";
 import ThemeToggle from "../components/ThemeToggle";
 import LogoHeader from "../components/LogoHeader";
