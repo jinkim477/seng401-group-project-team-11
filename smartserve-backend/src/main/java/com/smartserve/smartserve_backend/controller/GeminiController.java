@@ -15,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.springframework.security.core.Authentication;
 
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -184,12 +183,11 @@ public class GeminiController {
         // 🔹 Fetch user from database
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-    
+
         // 🔹 Retrieve user's meal plans
         List<GeneratedMealPlan> mealPlans = mealPlanRepository.findByUserId(user.getId());
         return ResponseEntity.ok(mealPlans);
     }
-
 
     private String buildPrompt(MealPlanRequest req) {
         return String.format("""
@@ -236,9 +234,19 @@ public class GeminiController {
                                 "carbs": "Carbs",
                                 "fat": "Fat"
                             }
+                        },
+                        "daily_totals": {
+                            "calories": "Total Calories",
+                            "protein": "Total Protein",
+                            "potassium": "Total Carbs",
+                            "phosphorus": "Total Fat",
+                            "vitamins": "Total Vitamins",
+                            "calcium": "Total Calcium",
+                            "sodium": "Total Sodium"
                         }
                     }
                 }
+                Note: the "meal" propertys name should be strictly "breakfast", "lunch", "dinner", or "snack".
                 """,
                 req.getDays(),
                 req.getSelectedDiets().isEmpty() ? "default" : String.join(", ", req.getSelectedDiets()),

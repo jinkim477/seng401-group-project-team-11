@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ThemeToggle from "../components/ThemeToggle";
 import LogoHeader from "../components/LogoHeader";
 import Footer from "../components/Footer";
@@ -15,6 +14,7 @@ type Meal = {
     ingredients?: string[];
     instructions?: string;
     prep_time?: string;
+    cook_time?: string;
     macros?: {
         calories?: string;
         protein?: string;
@@ -23,17 +23,27 @@ type Meal = {
     };
 };
 
-type MealPlanHistory = {
-    id: string;
-    createdTime: string;
-    response: string;
+type DailyTotals = {
+    calories: string;
+    protein: string;
+    potassium: string;
+    phosphorus: string;
+    vitamins: string;
+    calcium: string;
+    sodium: string;
 };
 
 type ParsedResponse = {
     [dayKey: string]: {
         [mealType: string]: Meal;
+        daily_totals?: DailyTotals;
     };
-    daily_totals?: Record<string, string>;
+};
+
+type MealPlanHistory = {
+    id: string;
+    createdTime: string;
+    response: string;
 };
 
 export default function MealHistoryPage() {
@@ -130,16 +140,16 @@ export default function MealHistoryPage() {
                                                 <hr className="my-4 border-gray-600" />
 
                                                 {/* Loop through days (day1, day2, etc.) */}
-                                                {Object.entries(parsedResponse).map(([dayKey, meals]) => {
-                                                    if (dayKey === "daily_totals") return null; // Skip daily_totals here
-                                                    return (
-                                                        <div key={dayKey} className="mb-6">
-                                                            <h3 className="mt-2 mb-2 text-xl font-bold text-gray-700 dark:text-gray-300">
-                                                                {dayKey.replace("day", "Day ")}
-                                                            </h3>
+                                                {Object.entries(parsedResponse).map(([dayKey, meals]) => (
+                                                    <div key={dayKey} className="mb-6">
+                                                        <h3 className="mt-2 mb-2 text-xl font-bold text-gray-700 dark:text-gray-300">
+                                                            {dayKey.replace("day", "Day ")}
+                                                        </h3>
 
-                                                            {/* Loop through meals (breakfast, lunch, etc.) */}
-                                                            {Object.entries(meals).map(([mealType, mealData]) => (
+                                                        {/* Loop through meals (breakfast, lunch, etc.) */}
+                                                        {Object.entries(meals).map(([mealType, mealData]) => {
+                                                            if (mealType === "daily_totals") return null; // Skip daily_totals within meal rendering
+                                                            return (
                                                                 <div key={mealType} className="mb-6 p-4 rounded-lg bg-accent-green dark:bg-accent-green text-dark">
                                                                     <h4 className="text-2xl font-bold capitalize">🍽️ {mealType}</h4>
                                                                     <p className="font-semibold text-xl">{mealData.name} - {mealData.price}</p>
@@ -148,7 +158,7 @@ export default function MealHistoryPage() {
                                                                         Prep Time: <span className="font-normal">{mealData.prep_time || "N/A"}</span>
                                                                     </p>
 
-                                                                    {/* Ingredients (Check if ingredients exist) */}
+                                                                    {/* Ingredients */}
                                                                     {mealData.ingredients && mealData.ingredients.length > 0 ? (
                                                                         <>
                                                                             <h5 className="text-md font-semibold mt-2">Ingredients:</h5>
@@ -162,7 +172,7 @@ export default function MealHistoryPage() {
                                                                         <p className="text-sm text-dark">No ingredients listed.</p>
                                                                     )}
 
-                                                                    {/* Macros (Check if macros exist) */}
+                                                                    {/* Macros */}
                                                                     {mealData.macros ? (
                                                                         <>
                                                                             <h5 className="text-md font-semibold mt-2">Macros:</h5>
@@ -177,22 +187,22 @@ export default function MealHistoryPage() {
                                                                         <p className="text-sm text-gray-400">No macros available.</p>
                                                                     )}
                                                                 </div>
-                                                            ))}
-                                                        </div>
-                                                    );
-                                                })}
+                                                            );
+                                                        })}
 
-                                                {/* Display Daily Totals */}
-                                                {parsedResponse.daily_totals && (
-                                                    <div className="mt-6 p-4 border border-gray-500 dark:border-gray-100 rounded-lg bg-primary dark:bg-dark">
-                                                        <h4 className="text-lg font-semibold">📊 Daily Totals</h4>
-                                                        <ul className="list-disc pl-5 ">
-                                                            {Object.entries(parsedResponse.daily_totals).map(([key, value]) => (
-                                                                <li key={key} className="capitalize">{key}: {value}</li>
-                                                            ))}
-                                                        </ul>
+                                                        {/* Display Daily Totals */}
+                                                        {meals.daily_totals && (
+                                                            <div className="mt-6 p-4 border border-gray-500 dark:border-gray-100 rounded-lg bg-primary dark:bg-dark">
+                                                                <h4 className="text-lg font-semibold">📊 Daily Totals</h4>
+                                                                <ul className="list-disc pl-5 ">
+                                                                    {Object.entries(meals.daily_totals).map(([key, value]) => (
+                                                                        <li key={key} className="capitalize">{key}: {value}</li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                )}
+                                                ))}
                                             </>
                                         )}
                                     </div>
