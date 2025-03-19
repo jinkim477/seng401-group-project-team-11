@@ -196,12 +196,9 @@ public class GeminiController {
                 - Height: %d cm
                 - Weight: %d kg
                 - Sex: %s
-                - Activity Level: %s
                 - Price Range: Up to $%d per meal
                 - Meal Prep Time Limit: %d minutes
                 - Cooking Time Limit: %d minutes
-                - Preferred Meal Times: %s
-                - Dietary Goal: %s
                 - Inclusions: %s
                 - Exclusions: %s
                 - Allergies: %s
@@ -253,12 +250,9 @@ public class GeminiController {
                 req.getHeight(),
                 req.getWeight(),
                 req.getSex(),
-                req.getActivityLevel().isEmpty() ? "Did not specify" : req.getActivityLevel(),
                 req.getPriceRange(),
                 req.getPrepTime(),
                 req.getCookTime(),
-                req.getMealTimes().isEmpty() ? "Anytime" : String.join(", ", req.getMealTimes()),
-                req.getDietaryGoal().isEmpty() ? "No preference" : req.getDietaryGoal(),
                 req.getInclusions().isEmpty() ? "No preferences" : req.getInclusions(),
                 req.getExclusions().isEmpty() ? "None" : req.getExclusions(),
                 req.getAllergies().isEmpty() ? "None" : req.getAllergies(),

@@ -39,10 +39,6 @@ type MealPlan = {
 
 // Define Form Data Type
 type FormDataType = {
-    displayName: string;
-    mealTimes: string[];
-    dietaryGoal: string;
-    activityLevel: string;
     selectedDiets: string[];
     otherDiet: boolean;
     otherDietDetails: string;
@@ -79,10 +75,6 @@ enum MealScope {
 }
 
 const initialFormData: FormDataType = {
-    displayName: "",
-    mealTimes: [],
-    dietaryGoal: "",
-    activityLevel: "",
     selectedDiets: [],
     otherDiet: false,
     otherDietDetails: "",

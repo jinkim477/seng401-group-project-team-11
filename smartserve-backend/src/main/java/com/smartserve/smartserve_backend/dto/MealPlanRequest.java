@@ -8,10 +8,6 @@ import java.util.Map;
 @Getter
 @Setter
 public class MealPlanRequest {
-    private String displayName;
-    private List<String> mealTimes;
-    private String dietaryGoal;
-    private String activityLevel;
     private List<String> selectedDiets;
     private boolean otherDiet;
     private String otherDietDetails;
