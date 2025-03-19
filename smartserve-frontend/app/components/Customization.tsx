@@ -72,7 +72,7 @@ const CustomizationOptions: React.FC<CustomizationProps> = ({
 
 			{/* Protein Requirement */}
 			<label className="block text-lg font-bold mt-4">
-				Protein Requirement (grams per day)
+				Protein Requirement (25 to 500 grams per day) 
 			</label>
 			<input
 				type="number"
@@ -85,12 +85,12 @@ const CustomizationOptions: React.FC<CustomizationProps> = ({
 			/>
 
 			{/* Nutrient Management */}
-			<h4 className="text-lg font-bold mt-4">Nutrient Management</h4>
+			<h4 className="text-lg font-bold mt-4">Nutrient Management </h4>
 			<div className="grid grid-cols-2 gap-6">
 				{Object.keys(formData.nutrients).map((nutrient) => (
 					<div key={nutrient}>
 						<label className="block text-lg font-bold">
-							{nutrient.charAt(0).toUpperCase() + nutrient.slice(1)} (mg)
+							{nutrient.charAt(0).toUpperCase() + nutrient.slice(1)} (0 to 10000 mg)
 						</label>
 						<input
 							type="number"

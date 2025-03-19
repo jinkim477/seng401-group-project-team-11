@@ -196,11 +196,11 @@ export default function DietOptionsPage() {
         if (data.height < 30 || data.height > 300) {
             errors.push("Height must be between 30 and 300 cm.");
         }
-        if (data.prepTime < 0 || data.prepTime > 60) {
-            errors.push("Prep time must be between 0 and 60 minutes.");
+        if (data.prepTime < 1 || data.prepTime > 60) {
+            errors.push("Prep time must be between 1 and 60 minutes.");
         }
-        if (data.cookTime < 0 || data.cookTime > 180) {
-            errors.push("Cook time must be between 0 and 180 minutes.");
+        if (data.cookTime < 1 || data.cookTime > 180) {
+            errors.push("Cook time must be between 1 and 180 minutes.");
         }
         if (data.priceRange < 5 || data.priceRange > 100) {
             errors.push("Price range must be between 5 and 100.");
@@ -340,14 +340,6 @@ export default function DietOptionsPage() {
                                 handleNutrientChange={handleNutrientChange}
                             />
                         )}
-                        {/* Error Message */}
-                        {/* {errorMessages.length > 0 && (
-                            <div className="error-container">
-                                {errorMessages.map((error, index) => (
-                                    <div key={index} className="error-message">{error}</div>
-                                ))}
-                            </div>
-                        )} */}
                     </form>
                 </div>
             </div>
