@@ -117,6 +117,8 @@ export default function DietOptionsPage() {
     const [activeTab, setActiveTab] = useState("User-Options");
     const [mealPlan, setMealPlan] = useState<MealPlan | null>(null);
     const [loading, setLoading] = useState(false);
+    const [errorMessages, setErrorMessages] = useState<string[]>([]); // For Error message when data is not within the range
+
 
     // State to store form data
     const [formData, setFormData] = useState<FormDataType>(initialFormData);
@@ -185,44 +187,44 @@ export default function DietOptionsPage() {
         }));
     };
 
-    const validateFormData = (data: FormDataType) => {
-        const errors: { [key: string]: string } = {};
+    function validateFormData(data: FormDataType): string[] {
+        const errors: string[] = [];
     
         if (data.weight < 15 || data.weight > 300) {
-            errors.weight = "Weight must be between 15 and 300 kg.";
+            errors.push("Weight must be between 15 and 300 kg.");
         }
         if (data.height < 30 || data.height > 300) {
-            errors.height = "Height must be between 30 and 300 cm.";
+            errors.push("Height must be between 30 and 300 cm.");
         }
-        if (data.prepTime < 0 || data.prepTime > 60) {
-            errors.prepTime = "Prep time must be between 0 and 60 minutes.";
+        if (data.prepTime < 1 || data.prepTime > 60) {
+            errors.push("Prep time must be between 1 and 60 minutes.");
         }
-        if (data.cookTime < 0 || data.cookTime > 180) {
-            errors.cookTime = "Cook time must be between 0 and 180 minutes.";
+        if (data.cookTime < 1 || data.cookTime > 180) {
+            errors.push("Cook time must be between 1 and 180 minutes.");
         }
         if (data.priceRange < 5 || data.priceRange > 100) {
-            errors.priceRange = "Price range must be between 5 and 100.";
+            errors.push("Price range must be between 5 and 100.");
         }
         if (data.calorieLimit < 1000 || data.calorieLimit > 5000) {
-            errors.calorieLimit = "Calorie limit must be between 1000 and 5000.";
+            errors.push("Calorie limit must be between 1000 and 5000.");
         }
         if (data.proteinRequirement < 25 || data.proteinRequirement > 500) {
-            errors.proteinRequirement = "Protein requirement must be between 25 and 500 grams.";
+            errors.push("Protein requirement must be between 25 and 500 grams.");
         }
         if (data.nutrients.potassium < 0 || data.nutrients.potassium > 10000) {
-            errors.potassium = "Potassium must be between 0 and 10000 mg.";
+            errors.push("Potassium must be between 0 and 10000 mg.");
         }
         if (data.nutrients.phosphorus < 0 || data.nutrients.phosphorus > 10000) {
-            errors.phosphorus = "Phosphorus must be between 0 and 10000 mg.";
+            errors.push("Phosphorus must be between 0 and 10000 mg.");
         }
         if (data.nutrients.vitamins < 0 || data.nutrients.vitamins > 10000) {
-            errors.vitamins = "Vitamins must be between 0 and 10000 mg.";
+            errors.push("Vitamins must be between 0 and 10000 mg.");
         }
         if (data.nutrients.calcium < 0 || data.nutrients.calcium > 10000) {
-            errors.calcium = "Calcium must be between 0 and 10000 mg.";
+            errors.push("Calcium must be between 0 and 10000 mg.");
         }
         if (data.nutrients.sodium < 0 || data.nutrients.sodium > 10000) {
-            errors.sodium = "Sodium must be between 0 and 10000 mg.";
+            errors.push("Sodium must be between 0 and 10000 mg.");
         }
     
         return errors;
@@ -238,11 +240,11 @@ export default function DietOptionsPage() {
         }
         
         const errors = validateFormData(formData);
-        if (Object.keys(errors).length > 0) {
-            alert("Please correct the following errors:\n" + JSON.stringify(errors, null, 2));
+        if (errors.length > 0) {
+            setErrorMessages(errors);
             return;
         }
-
+        setErrorMessages([]);
         // Build the API request payload with all form options
         const requestBody = {
             ...formData,
@@ -293,13 +295,15 @@ export default function DietOptionsPage() {
             </div>
             {/* Main Layout */}
             <div className="container mx-auto flex flex-col lg:flex-row w-full space-y-6 lg:space-x-6 lg:space-y-0 items-start">
-                {/* Sidebar */}
+                {/* Sidebar */
+                }
                 <Sidebar
                     tabs={tabs}
                     activeTab={activeTab}
                     handleTabChange={handleTabChange}
                     handleSubmit={handleSubmit}
                     loading={loading}
+                    errorMessages={errorMessages} // Passing error messages to Sidebar
                 />
 
                 {/* Form Section */}
@@ -308,34 +312,35 @@ export default function DietOptionsPage() {
                         {activeTab.replace("-", " ")}
                     </h2>
                     <hr className="border-t border-gray-500 dark:border-gray-700 mb-6" />
+                    <form onSubmit={handleSubmit}>
+                        {/* User Options */}
+                        {activeTab === "User-Options" && (
+                            <UserOptions
+                                formData={formData}
+                                handleChange={handleChange}
+                                handleCheckboxChange={handleCheckboxChange}
+                            />
+                        )}
 
-                    {/* User Options */}
-                    {activeTab === "User-Options" && (
-                        <UserOptions
-                            formData={formData}
-                            handleChange={handleChange}
-                            handleCheckboxChange={handleCheckboxChange}
-                        />
-                    )}
+                        {/* Diet Options */}
+                        {activeTab === "Diet-Options" && (
+                            <DietOptions
+                                formData={formData}
+                                handleChange={handleChange}
+                                handleCheckboxChange={handleCheckboxChange}
+                            />
+                        )}
 
-                    {/* Diet Options */}
-                    {activeTab === "Diet-Options" && (
-                        <DietOptions
-                            formData={formData}
-                            handleChange={handleChange}
-                            handleCheckboxChange={handleCheckboxChange}
-                        />
-                    )}
-
-                    {/* Customization */}
-                    {activeTab === "Customization" && (
-                        <Customization
-                            formData={formData}
-                            handleChange={handleChange}
-                            handleCheckboxChange={handleCheckboxChange}
-                            handleNutrientChange={handleNutrientChange}
-                        />
-                    )}
+                        {/* Customization */}
+                        {activeTab === "Customization" && (
+                            <Customization
+                                formData={formData}
+                                handleChange={handleChange}
+                                handleCheckboxChange={handleCheckboxChange}
+                                handleNutrientChange={handleNutrientChange}
+                            />
+                        )}
+                    </form>
                 </div>
             </div>
 

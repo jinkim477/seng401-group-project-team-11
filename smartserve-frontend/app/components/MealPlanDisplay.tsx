@@ -30,7 +30,7 @@ interface MealPlanDisplayProps {
 
 const MealPlanDisplay: React.FC<MealPlanDisplayProps> = ({ mealPlan }) => {
   return (
-    <div className="mt-8 p-6 bg-accent-gray dark:bg-accent-beige rounded-3xl shadow-lg text-primary dark:text-dark text-center">
+    <div className="mt-8 p-6 w-full bg-accent-gray dark:bg-accent-beige rounded-3xl shadow-lg text-primary dark:text-dark text-center">
       <h3 className="text-3xl tracking-widest font-bold">Generated Meal Plan</h3>
       <div className="mt-4 p-4 bg-dark text-primary dark:bg-primary dark:text-dark rounded-lg">
         {Object.keys(mealPlan).map((dayKey, dayIndex) => {

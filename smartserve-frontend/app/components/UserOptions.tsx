@@ -14,7 +14,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ formData, handleChange }) => 
       {/* Physical Attributes */}
       <div className="grid grid-cols-2 gap-6 mt-4">
         <div>
-          <label className="block text-lg font-bold">Weight (kg)</label>
+          <label className="block text-lg font-bold">Weight (15 to 300 kg)</label>
           <input
             type="number"
             name="weight"
@@ -26,7 +26,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ formData, handleChange }) => 
           />
         </div>
         <div>
-          <label className="block text-lg font-bold">Height (cm)</label>
+          <label className="block text-lg font-bold">Height (30 to 300 cm)</label>
           <input
             type="number"
             name="height"
@@ -77,12 +77,12 @@ const UserOptions: React.FC<UserOptionsProps> = ({ formData, handleChange }) => 
 
       {/* Meal Prep Time */}
       <label className="block text-lg font-bold mt-4">
-        Meal Prep Time (minutes)
+        Meal Prep Time (1 to 60 minutes)
       </label>
       <input
         type="number"
         name="prepTime"
-        min="0"
+        min="1"
         max="60"
         value={formData.prepTime}
         onChange={handleChange}
@@ -92,12 +92,12 @@ const UserOptions: React.FC<UserOptionsProps> = ({ formData, handleChange }) => 
 
       {/* Meal Cook Time */}
       <label className="block text-lg font-bold mt-4">
-        Meal Cook Time (minutes)
+        Meal Cook Time (1 to 180 minutes)
       </label>
       <input
         type="number"
         name="cookTime"
-        min="0"
+        min="1"
         max="180"
         value={formData.cookTime}
         onChange={handleChange}
