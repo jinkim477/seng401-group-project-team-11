@@ -29,41 +29,56 @@ public class AuthController {
 
     // Registration endpoint
     @PostMapping("/register")
-    public String registerUser(@RequestBody User user) {
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent() ||
-            userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return "User already exists";
+                userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("User already exists");
         }
         // Encrypt the password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        // Send registration email
-        emailService.sendRegistrationEmail(
-            user.getEmail(), 
-            "🎉 Welcome to SmartServe " + user.getUsername(), 
-            "Hi " + user.getUsername() + ",\n\n" +
-            "Thank you for registering with SmartServe! We're excited to have you on board. 🚀" + "\n\n" +
-            "With SmartServe, you can:\n" + 
-            "✅ Generate meal plans based on your dietary preferences\n" +
-            "✅ Get personalized nutrition recommendations\n" +
-            "✅ Explore a variety of delicious recipes" + "\n\n" +
-            "Next Steps:\n" +
-            "1️⃣ Log in to your account at the SmartServe website\n" +
-            "2️⃣ Set up your meal preferences\n" +
-            "3️⃣ Start generating your first meal plan!" + "\n\n" +
-            "Need any help? Feel free to reply to this email or visit our website for more information." + "\n\n" +
-            "Happy meal planning! 🍽️\n\n" +
-            "Best,\n" +
-            "The SmartServe Team"
-        );
-        return "User registered successfully";
+
+        // Prepare enhanced HTML content with inline CSS
+        String htmlContent = "<div style='font-family: Helvetica, Arial, sans-serif; margin: 0; padding: 20px; background-color: #f7f7f7; color: #333;'>"
+                +
+                "<h2 style='color: #2A7DB1; text-align: center;'>Welcome to SmartServe, " + user.getUsername()
+                + "!</h2>" +
+                "<p style='font-size: 16px;'>Hi " + user.getUsername() + ",</p>" +
+                "<p>Thank you for registering with SmartServe! We're excited to have you on board. 🚀</p>" +
+                "<div style='padding: 18px; background-color: white; border: 1px solid #ddd;'>" +
+                "<h4>What you can do with SmartServe:</h4>" +
+                "<ul>" +
+                "<li><strong>Generate meal plans</strong> based on your dietary preferences</li>" +
+                "<li><strong>Get personalized nutrition recommendations</strong></li>" +
+                "<li><strong>Explore a variety of delicious recipes</strong></li>" +
+                "</ul>" +
+                "<h4>Next Steps:</h4>" +
+                "<ol>" +
+                "<li>Log in to your account at the <a href='https://smartserve.com/login' style='color: #2A7DB1; text-decoration: none;'>SmartServe website</a>.</li>"
+                +
+                "<li>Set up your meal preferences.</li>" +
+                "<li>Start generating your first meal plan!</li>" +
+                "</ol>" +
+                "</div>" +
+                "<p>If you need any help, feel free to <a href='mailto:smartserve401@smartserve.com' style='color: #2A7DB1; text-decoration: none;'>reply to this email</a> or visit our <a href='https://smartserve.com/support' style='color: #2A7DB1; text-decoration: none;'>website</a> for more information.</p>"
+                +
+                "<p>Happy meal planning! 🍽️</p>" +
+                "<p style='text-align: center; font-size: 14px; color: #666;'>Best regards,<br>The SmartServe Team</p>"
+                +
+                "</div>";
+
+        // Send registration email with enhanced HTML content
+        emailService.sendRegistrationEmail(user.getEmail(), "🎉 Welcome to SmartServe " + user.getUsername(),
+                htmlContent);
+
+        return ResponseEntity.ok("User registered successfully");
     }
 
     // Login endpoint (for demonstration purposes)
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestBody User user) {
         Optional<User> optionalUser = userRepository.findByUsername(user.getUsername())
-            .filter(u -> passwordEncoder.matches(user.getPassword(), u.getPassword()));
+                .filter(u -> passwordEncoder.matches(user.getPassword(), u.getPassword()));
 
         if (optionalUser.isPresent()) {
             User u = optionalUser.get();
