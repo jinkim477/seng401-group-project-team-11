@@ -10,7 +10,8 @@ import MealPlanDisplay from "../components/MealPlanDisplay";
 import Footer from "../components/Footer";
 import AuthButtons from "../components/AuthButtons"; //
 
-const API_URL = "http://localhost:8080/gemini/generate";
+const RU_API_URL = "http://localhost:8080/gemini/generate";
+const G_API_URL = "http://localhost:8080/gemini/guest/generate";
 
 type Meal = {
     name: string;
@@ -226,6 +227,8 @@ export default function DietOptionsPage() {
     };
 
     const handleSubmit = async () => {
+        const userId = localStorage.getItem("userId");
+        const isGuest = !userId;
         // Ensure required fields are selected
         if (!formData.mealScope) {
             alert("Please select a meal scope (One Day, Three Days, One Week).");
@@ -253,7 +256,9 @@ export default function DietOptionsPage() {
         setLoading(true);
 
         try {
-            const response = await fetch(API_URL, {
+            const url = isGuest ? G_API_URL : `${RU_API_URL}?userId=${userId}`;
+
+            const response = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

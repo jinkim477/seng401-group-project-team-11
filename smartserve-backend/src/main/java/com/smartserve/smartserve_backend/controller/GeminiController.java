@@ -1,12 +1,22 @@
 package com.smartserve.smartserve_backend.controller;
 
 import com.smartserve.smartserve_backend.dto.MealPlanRequest;
+import com.smartserve.smartserve_backend.model.GeneratedMealPlan;
+import com.smartserve.smartserve_backend.model.User;
+import com.smartserve.smartserve_backend.repository.GeneratedMealPlanRepository;
+import com.smartserve.smartserve_backend.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import org.springframework.security.core.Authentication;
+
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -22,8 +32,91 @@ public class GeminiController {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    private final GeneratedMealPlanRepository mealPlanRepository;
+    private final UserRepository userRepository;
+
+    public GeminiController(GeneratedMealPlanRepository mealPlanRepository, UserRepository userRepository) {
+        this.mealPlanRepository = mealPlanRepository;
+        this.userRepository = userRepository;
+    }
+
     @PostMapping("/generate")
-    public ResponseEntity<String> generateMealPlan(@RequestBody MealPlanRequest request) {
+    public ResponseEntity<String> generateMealPlan(@RequestParam Long userId, @RequestBody MealPlanRequest request) {
+        try {
+            System.out.println("🔹 Processing Meal Plan Request...");
+            System.out.println("📌 API Key Used: " + (geminiApiKey != null ? "Set" : "MISSING"));
+            System.out.println("➡️ Request Data: " + request);
+
+            // Ensure API Key is provided
+            if (geminiApiKey == null || geminiApiKey.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"API Key is missing\"}");
+            }
+
+            // Fetch user from database
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            // 1. Construct prompt dynamically
+            String prompt = buildPrompt(request);
+
+            // 2. Set up Gemini API request payload
+            Map<String, Object> requestBody = new HashMap<>();
+            Map<String, String> contentPart = Map.of("text", prompt);
+            Map<String, Object> content = Map.of("parts", List.of(contentPart));
+            requestBody.put("contents", List.of(content));
+
+            // 3. Prepare request headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder
+                    .fromUriString(GEMINI_API_URL)
+                    .queryParam("key", geminiApiKey);
+
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+
+            // 4. Send request to Gemini API
+            ResponseEntity<Map> response = restTemplate.postForEntity(
+                    uriBuilder.toUriString(), entity, Map.class);
+
+            // 5. Extract response data safely
+            if (response.getBody() == null || !response.getBody().containsKey("candidates")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("{\"error\": \"Invalid response from Gemini API\"}");
+            }
+
+            List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.getBody().get("candidates");
+            if (candidates == null || candidates.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("{\"error\": \"No content generated\"}");
+            }
+
+            Map<String, Object> firstCandidate = candidates.get(0);
+            Map<String, Object> responseContent = (Map<String, Object>) firstCandidate.get("content");
+            List<Map<String, String>> parts = (List<Map<String, String>>) responseContent.get("parts");
+
+            String generatedText = parts.get(0).get("text");
+
+            // Remove markdown JSON formatting if it exists
+            generatedText = generatedText.replaceAll("^```json\\s*", "").replaceAll("```$", "").trim();
+
+            // Save meal plan to database
+            GeneratedMealPlan mealPlan = new GeneratedMealPlan();
+            mealPlan.setUser(user);
+            mealPlan.setResponse(generatedText);
+            mealPlan.setCreatedTime(LocalDateTime.now());
+            mealPlanRepository.save(mealPlan);
+
+            System.out.println("✅ Generated Meal Plan: " + generatedText); // prints in backend terminal for debugging
+            return ResponseEntity.ok(generatedText);
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Debugging logs
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"error\": \"Server Error: " + e.getMessage() + "\"}");
+        }
+    }
+
+    @PostMapping("/guest/generate")
+    public ResponseEntity<String> generateGuestMealPlan(@RequestBody MealPlanRequest request) {
         try {
             System.out.println("🔹 Processing Meal Plan Request...");
             System.out.println("📌 API Key Used: " + (geminiApiKey != null ? "Set" : "MISSING"));
@@ -85,6 +178,18 @@ public class GeminiController {
                     .body("{\"error\": \"Server Error: " + e.getMessage() + "\"}");
         }
     }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<GeneratedMealPlan>> getUserMealPlans(@RequestParam Long userId) {
+        // 🔹 Fetch user from database
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    
+        // 🔹 Retrieve user's meal plans
+        List<GeneratedMealPlan> mealPlans = mealPlanRepository.findByUserId(user.getId());
+        return ResponseEntity.ok(mealPlans);
+    }
+
 
     private String buildPrompt(MealPlanRequest req) {
         return String.format("""

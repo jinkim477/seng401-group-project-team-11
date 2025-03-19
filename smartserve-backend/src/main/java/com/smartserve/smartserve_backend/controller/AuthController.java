@@ -3,7 +3,14 @@ package com.smartserve.smartserve_backend.controller;
 import com.smartserve.smartserve_backend.model.User;
 import com.smartserve.smartserve_backend.repository.UserRepository;
 import com.smartserve.smartserve_backend.service.EmailService;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,10 +61,22 @@ public class AuthController {
 
     // Login endpoint (for demonstration purposes)
     @PostMapping("/login")
-    public String loginUser(@RequestBody User user) {
-        return userRepository.findByUsername(user.getUsername())
-            .filter(u -> passwordEncoder.matches(user.getPassword(), u.getPassword()))
-            .map(u -> "Login successful")
-            .orElse("Invalid credentials");
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody User user) {
+        Optional<User> optionalUser = userRepository.findByUsername(user.getUsername())
+            .filter(u -> passwordEncoder.matches(user.getPassword(), u.getPassword()));
+
+        if (optionalUser.isPresent()) {
+            User u = optionalUser.get();
+            Map<String, Object> response = new HashMap<>();
+            response.put("id", u.getId());
+            response.put("username", u.getUsername());
+            response.put("message", "Login successful");
+
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
     }
 }
