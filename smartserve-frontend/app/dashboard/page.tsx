@@ -9,8 +9,11 @@ import Customization from "../components/Customization";
 import MealPlanDisplay from "../components/MealPlanDisplay";
 import Footer from "../components/Footer";
 import AuthButtons from "../components/AuthButtons"; //
+import AboutUs from "../components/AboutUs";
+import Contact from "../components/Contact";
 
-const API_URL = "http://localhost:8080/gemini/generate";
+const RU_API_URL = "http://localhost:8080/gemini/generate";
+const G_API_URL = "http://localhost:8080/gemini/guest/generate";
 
 type Meal = {
     name: string;
@@ -226,6 +229,8 @@ export default function DietOptionsPage() {
     };
 
     const handleSubmit = async () => {
+        const userId = localStorage.getItem("userId");
+        const isGuest = !userId;
         // Ensure required fields are selected
         if (!formData.mealScope) {
             alert("Please select a meal scope (One Day, Three Days, One Week).");
@@ -253,7 +258,9 @@ export default function DietOptionsPage() {
         setLoading(true);
 
         try {
-            const response = await fetch(API_URL, {
+            const url = isGuest ? G_API_URL : `${RU_API_URL}?userId=${userId}`;
+
+            const response = await fetch(url, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -279,12 +286,11 @@ export default function DietOptionsPage() {
     return (
         <div className="relative min-h-screen bg-primary text-dark dark:bg-dark dark:text-primary flex flex-col items-center px-4 py-6">
             {/* Logo Placement */}
-            <LogoHeader />
-
-            <AuthButtons />
-
-            <ThemeToggle />
-
+            <div className="flex items-center justify-between w-full px-6 pt-2 pb-8">
+                <LogoHeader />
+                <AuthButtons />
+                <ThemeToggle />
+            </div>
             {/* Main Layout */}
             <div className="container mx-auto flex flex-col lg:flex-row w-full space-y-6 lg:space-x-6 lg:space-y-0 items-start">
                 {/* Sidebar */}
@@ -297,7 +303,7 @@ export default function DietOptionsPage() {
                 />
 
                 {/* Form Section */}
-                <div className="w-full lg:flex-grow bg-dark text-primary dark:bg-primary dark:text-dark p-8 rounded-3xl shadow-lg flex flex-col shadow-lg">
+                <div className="w-full lg:flex-grow bg-dark text-primary dark:bg-primary dark:text-dark p-8 rounded-3xl shadow-lg flex flex-col">
                     <h2 className="text-3xl font-bold text-center mb-4">
                         {activeTab.replace("-", " ")}
                     </h2>
@@ -335,6 +341,11 @@ export default function DietOptionsPage() {
 
             {mealPlan && <MealPlanDisplay mealPlan={mealPlan} />}
 
+
+            {/* About Us */}
+            <AboutUs />
+            {/* Contact */}
+            <Contact />
             {/* Footer */}
             <Footer />
         </div>

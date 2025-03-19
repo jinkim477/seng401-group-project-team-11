@@ -32,15 +32,20 @@ export default function LoginPage() {
 				body: JSON.stringify({ username, password }),
 			});
 
-			const responseText = await res.text();
-			console.log("Response from backend:", responseText);
+			if (!res.ok) {
+				throw new Error("An error occured. Please try again.");
+			}
 
-			if (responseText === "Invalid credentials") {
-				throw new Error("Invalid username or password.");
+			const responseData = await res.json();
+			console.log("Response from backend:", responseData);
+
+			if (!responseData.id) {
+				throw new Error("Login Failed. No user ID received.");
 			}
 
 			// Store username instead of token
 			localStorage.setItem("auth-token", username);
+			localStorage.setItem("userId", responseData.id);
 			setIsLoggedIn(true);
 
 			router.push("/dashboard"); // Redirect after successful login

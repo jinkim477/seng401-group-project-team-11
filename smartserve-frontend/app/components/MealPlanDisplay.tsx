@@ -1,8 +1,32 @@
+"use client";
 import React from 'react';
+
+interface Meal {
+  name: string;
+  price: string;
+  ingredients: string[];
+  instructions: string;
+  prep_time: string;
+  macros: {
+    calories: string;
+    protein: string;
+    carbs: string;
+    fat: string;
+  };
+}
+
+interface Day {
+  [mealType: string]: Meal;
+}
+
+interface MealPlan {
+  [dayKey: string]: Day;
+}
 
 interface MealPlanDisplayProps {
   mealPlan: MealPlan;
 }
+
 
 const MealPlanDisplay: React.FC<MealPlanDisplayProps> = ({ mealPlan }) => {
   return (

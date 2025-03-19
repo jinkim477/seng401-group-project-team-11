@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 
 interface SidebarProps {
@@ -15,7 +16,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tabs, activeTab, handleTabChange, han
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            className={`w-full text-lg font-bold py-4 rounded-3xl transition shadow-lg ${
+            className={`w-full text-lg font-bold py-4 rounded-3xl transition shadow-lg hover:scale-110 ${
               activeTab === tab.id
                 ? "bg-accent-gray text-white dark:bg-accent-beige dark:text-dark"
                 : "bg-dark text-primary dark:bg-primary dark:text-dark"
