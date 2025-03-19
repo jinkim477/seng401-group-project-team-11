@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeToggle /> {/* ✅ Add the dark mode toggle button */}
+        {/* <ThemeToggle /> */}
         {children}
       </body>
     </html>

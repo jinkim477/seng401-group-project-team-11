@@ -26,8 +26,4 @@ public class GeneratedMealPlanService {
     public List<GeneratedMealPlan> getUserMealPlans(Long userId) {
         return generatedMealPlanRepository.findByUserId(userId);
     }
-
-    public List<Long> deleteMealPlans(Long userId) {
-        return generatedMealPlanRepository.deleteByUserId(userId);
-    }
 }

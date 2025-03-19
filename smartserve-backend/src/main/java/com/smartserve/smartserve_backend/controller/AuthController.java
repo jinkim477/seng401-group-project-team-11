@@ -24,22 +24,18 @@ public class AuthController {
     private UserRepository userRepository;
 
     @Autowired
-    private GeneratedMealPlanRepository mealPlanRepository;
-
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private EmailService emailService;
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new RuntimeException("User not found");
-        }
-        List<Long> deletedMealPlans = mealPlanRepository.deleteByUserId(userId);
-        userRepository.deleteById(userId);
-        return ResponseEntity.ok("User deleted successfully along with " + deletedMealPlans.size() + " meal plans");
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteUser(@RequestParam Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        userRepository.delete(user);
+        return ResponseEntity.ok("Deleted Successfully");
     }
 
     // Registration endpoint

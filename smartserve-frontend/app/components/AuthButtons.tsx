@@ -26,7 +26,7 @@ const AuthButtons = () => {
 	};
 
 	return (
-		<div className="absolute right-16 flex pr-3 items-right space-x-3 sm:space-x-4 md:space-x-5 lg:space-x-6">
+		<div className="flex pr-3 items-right space-x-3 sm:space-x-4 md:space-x-5 lg:space-x-6">
 			{!isLoggedIn ? (
 				<button
 					onClick={() => handleNavigate("/login")}

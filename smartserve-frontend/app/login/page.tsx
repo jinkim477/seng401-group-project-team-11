@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import ThemeToggle from "../components/ThemeToggle";
+import LogoHeader from "../components/LogoHeader";
 
 export default function LoginPage() {
 	const router = useRouter();
@@ -33,7 +35,7 @@ export default function LoginPage() {
 			});
 
 			if (!res.ok) {
-				throw new Error("An error occured. Please try again.");
+				throw new Error("An error occurred. Please try again.");
 			}
 
 			const responseData = await res.json();
@@ -55,48 +57,63 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-			<h2 className="text-2xl font-bold text-center mb-4 text-black">
-				Welcome to SmartServe
-			</h2>
+		<div className="relative min-h-screen bg-primary text-dark dark:bg-dark dark:text-primary flex flex-col items-center px-4 py-6">
+			{/* Logo Placement */}
+			<div className="flex items-center justify-between w-full px-6 pt-2 pb-8">
+				<LogoHeader />
+			</div>
+			<div className="w-full flex flex-col justify-center items-center bg-primary text-dark dark:bg-dark dark:text-primary mt-16">
+				<h2 className="text-2xl font-bold text-center mb-4">
+					Welcome to SmartServe
+				</h2>
 
-			<div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-				{isLoggedIn ? (
-					<p className="text-green-500 text-lg text-center">
-						You are already logged in.
-					</p>
-				) : (
-					<>
-						<h2 className="text-2xl font-bold text-center mb-4 text-black">
-							Login
-						</h2>
-						{error && <p className="text-red-500 text-sm">{error}</p>}
-						<form onSubmit={handleLogin} className="space-y-4">
-							<input
-								type="text"
-								placeholder="Username"
-								className="w-full p-2 border rounded text-black"
-								value={username}
-								onChange={(e) => setUsername(e.target.value)}
-								required
-							/>
-							<input
-								type="password"
-								placeholder="Password"
-								className="w-full p-2 border rounded text-black"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								required
-							/>
-							<button
-								type="submit"
-								className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-							>
-								Login
-							</button>
-						</form>
-					</>
-				)}
+				<div className="w-full max-w-md p-6 bg-dark text-primary dark:bg-primary dark:text-dark rounded-3xl shadow-lg">
+					{isLoggedIn ? (
+						<p className="text-green-500 text-lg text-center">
+							You are already logged in.
+						</p>
+					) : (
+						<>
+							<h2 className="text-2xl font-bold text-center mb-4">Login</h2>
+							{error && <p className="text-red-500 text-sm">{error}</p>}
+							<form onSubmit={handleLogin} className="space-y-4">
+								<input
+									type="text"
+									placeholder="Username"
+									className="w-full p-2 border rounded-lg bg-accent-gray dark:bg-accent-beige text-primary dark:text-dark placeholder-accent-beige dark:placeholder-accent-gray"
+									value={username}
+									onChange={(e) => setUsername(e.target.value)}
+									required
+								/>
+								<input
+									type="password"
+									placeholder="Password"
+									className="w-full p-2 border rounded-lg bg-accent-gray dark:bg-accent-beige text-primary dark:text-dark placeholder-accent-beige dark:placeholder-accent-gray"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+									required
+								/>
+								<button
+									type="submit"
+									className="w-full p-2 bg-accent-green text-dark  rounded-lg hover:bg-green-600 transition"
+								>
+									Login
+								</button>
+							</form>
+							<div>
+								<p className="text-center mt-4">
+									Don&apos;t have an account?{" "}
+									<a
+										href="/register"
+										className="text-accent-green dark:text-green-800 hover:underline"
+									>
+										Register here
+									</a>
+								</p>
+							</div>
+						</>
+					)}
+				</div>
 			</div>
 		</div>
 	);

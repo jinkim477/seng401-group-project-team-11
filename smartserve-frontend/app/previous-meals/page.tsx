@@ -100,8 +100,6 @@ export default function MealHistoryPage() {
 			{/* Logo Placement */}
 			<div className="flex items-center justify-between w-full px-6 pt-2 pb-8">
 				<LogoHeader />
-				<AuthButtons />
-				<ThemeToggle />
 			</div>
 
 			{/* Main Layout */}
