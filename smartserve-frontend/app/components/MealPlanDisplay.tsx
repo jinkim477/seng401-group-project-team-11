@@ -97,6 +97,23 @@ const MealPlanDisplay: React.FC<MealPlanDisplayProps> = ({ mealPlan }) => {
                   </div>
                 );
               })}
+            {/* Display Daily Totals */}
+            {mealPlan[dayKey].daily_totals && (
+																	<div className="mt-6 p-4 border border-gray-500 dark:border-gray-100 rounded-lg bg-primary dark:bg-dark">
+																		<h4 className="text-lg font-semibold">
+																			📊 Daily Totals
+																		</h4>
+																		<ul className="list-disc pl-5 ">
+																			{Object.entries(mealPlan[dayKey].daily_totals).map(
+																				([key, value]) => (
+																					<li key={key} className="capitalize">
+																						{key}: {value}
+																					</li>
+																				)
+																			)}
+																		</ul>
+																	</div>
+																)}
             </div>
           );
         })}
