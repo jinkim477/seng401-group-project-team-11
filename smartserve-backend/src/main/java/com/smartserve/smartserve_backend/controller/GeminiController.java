@@ -206,9 +206,9 @@ public class GeminiController {
                 - Exclusions: %s
                 - Allergies: %s
 
-                The plan should support the following goals: %s.
+                The plan should support the following goals (daily): %s.
                 Nutritional guidelines:
-                - Calorie Limit: %d kcal
+                - Calorie Goal: %d kcal
                 - Protein Requirement: %d grams
                 - Nutrients:
                     - Potassium: %d mg
@@ -246,7 +246,7 @@ public class GeminiController {
                         }
                     }
                 }
-                Note: the "meal" propertys name should be strictly "breakfast", "lunch", "dinner", or "snack".
+                Note: the "meal" property's name should be strictly "breakfast", "lunch", "dinner", or "snack". You also must try to reach the calorie goal as closely as possible. You must provide all of the daily totals for each day.
                 """,
                 req.getDays(),
                 req.getSelectedDiets().isEmpty() ? "default" : String.join(", ", req.getSelectedDiets()),
