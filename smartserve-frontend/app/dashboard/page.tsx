@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import ThemeToggle from "../components/ThemeToggle";
 import LogoHeader from "../components/LogoHeader";
 import Sidebar from "../components/Sidebar";
 import UserOptions from "../components/UserOptions";
@@ -8,7 +7,6 @@ import DietOptions from "../components/DietOptions";
 import Customization from "../components/Customization";
 import MealPlanDisplay from "../components/MealPlanDisplay";
 import Footer from "../components/Footer";
-import AuthButtons from "../components/AuthButtons"; //
 import AboutUs from "../components/AboutUs";
 import Contact from "../components/Contact";
 

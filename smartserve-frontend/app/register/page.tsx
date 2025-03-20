@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import ThemeToggle from "../components/ThemeToggle";
 import LogoHeader from "../components/LogoHeader";
 
 export default function RegisterPage() {
