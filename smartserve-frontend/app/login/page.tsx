@@ -25,7 +25,7 @@ export default function LoginPage() {
 		setError(""); // Clear previous errors
 
 		try {
-			const res = await fetch("http://localhost:8080/api/auth/login", {
+			const res = await fetch("https://seng401-group-project-team-11-production.up.railway.app/api/auth/login", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

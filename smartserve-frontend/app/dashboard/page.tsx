@@ -12,8 +12,8 @@ import AuthButtons from "../components/AuthButtons"; //
 import AboutUs from "../components/AboutUs";
 import Contact from "../components/Contact";
 
-const RU_API_URL = "http://localhost:8080/gemini/generate";
-const G_API_URL = "http://localhost:8080/gemini/guest/generate";
+const RU_API_URL = "https://seng401-group-project-team-11-production.up.railway.app/gemini/generate";
+const G_API_URL = "https://seng401-group-project-team-11-production.up.railway.app/gemini/guest/generate";
 
 type Meal = {
 	name: string;
