@@ -1,10 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ThemeToggle from "../components/ThemeToggle";
 import LogoHeader from "../components/LogoHeader";
 import Footer from "../components/Footer";
-import AuthButtons from "../components/AuthButtons";
 
 const API_URL = "https://seng401-group-project-team-11-production.up.railway.app/gemini/history";
 
