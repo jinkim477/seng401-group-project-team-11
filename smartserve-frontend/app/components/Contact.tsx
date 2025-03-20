@@ -5,7 +5,7 @@ const Contact = () => {
 		<div className="w-11/12 bg-dark dark:bg-primary text-primary dark:text-dark text-center text-sm py-4 mt-4 rounded-3xl">
 			<h3 className="text-3xl font-semibold">Contact Us</h3>
 			<hr className="border-1 border-primary dark:border-dark m-4 mx-auto w-11/12" />
-			<div className="flex flex-col flex-wrap justify-evenly">
+			<div className="flex flex-row flex-wrap justify-evenly">
 				<p className="text-lg flex items-center justify-center">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
