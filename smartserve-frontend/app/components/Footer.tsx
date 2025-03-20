@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 const Footer: React.FC = () => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const DEL_API_URL = "http://localhost:8080/api/auth/delete";
+	const DEL_API_URL = "https://seng401-group-project-team-11-production.up.railway.app/api/auth/delete";
 	const router = useRouter();
 
 	useEffect(() => {
