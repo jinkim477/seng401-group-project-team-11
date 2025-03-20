@@ -11,7 +11,6 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ tabs, activeTab, handleTabChange, handleSubmit, loading, errorMessages}) => {
-  console.log("Sidebar receiving errorMessages:", errorMessages);
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleSubmit();
