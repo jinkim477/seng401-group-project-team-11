@@ -28,7 +28,7 @@ public class SecurityConfig {
 
     private UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // ✅ Allow only frontend
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://smartserveai.vercel.app")); // ✅ Allow only frontend
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true); // ✅ Required for authentication
@@ -41,7 +41,7 @@ public class SecurityConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000")); // ✅ Allow only frontend
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://smartserveai.vercel.app")); // ✅ Allow only frontend
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true); // ✅ Required for authentication
