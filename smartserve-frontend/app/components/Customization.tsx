@@ -1,6 +1,41 @@
 "use client";
 import React from "react";
 
+enum MealScope {
+	OneDay = "One Day",
+	ThreeDays = "Three Days",
+	OneWeek = "One Week",
+}
+
+type FormDataType = {
+	selectedDiets: string[];
+	otherDiet: boolean;
+	otherDietDetails: string;
+	inclusions: string;
+	allergies: string;
+	exclusions: string;
+
+	// New Fields for User Options
+	weight: number;
+	height: number;
+	sex: string;
+	priceRange: number;
+	prepTime: number;
+	cookTime: number;
+
+	// New Fields for Customization
+	selectedGoals: string[];
+	calorieLimit: number;
+	proteinRequirement: number;
+	nutrients: {
+		potassium: number;
+		phosphorus: number;
+		vitamins: number;
+		calcium: number;
+		sodium: number;
+	};
+	mealScope: MealScope;
+};
 interface CustomizationProps {
 	formData: FormDataType;
 	handleChange: (
