@@ -54,7 +54,7 @@ public class AuthController {
                 .status(HttpStatus.CONFLICT)
                 .body(Map.of("error", "This email is already registered to an account"));
         }
-        
+
         // Encrypt the password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -75,7 +75,7 @@ public class AuthController {
                 "</ul>" +
                 "<h4>Next Steps:</h4>" +
                 "<ol>" +
-                "<li>Log in to your account at the <a href='https://smartserve.com/login' style='color: #2A7DB1; text-decoration: none;'>SmartServe website</a>.</li>"
+                "<li>Log in to your account at the <a href='https://smartserveai.vercel.app/login' style='color: #2A7DB1; text-decoration: none;'>SmartServe website</a>.</li>"
                 +
                 "<li>Set up your meal preferences.</li>" +
                 "<li>Start generating your first meal plan!</li>" +
@@ -98,21 +98,20 @@ public class AuthController {
     // Login endpoint (for demonstration purposes)
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestBody User user) {
-        Optional<User> optionalUser = userRepository.findByUsername(user.getUsername())
-                .filter(u -> passwordEncoder.matches(user.getPassword(), u.getPassword()));
-
+        Optional<User> optionalUser = userRepository.findByUsername(user.getUsername());
         if (optionalUser.isPresent()) {
             User u = optionalUser.get();
-            Map<String, Object> response = new HashMap<>();
-            response.put("id", u.getId());
-            response.put("username", u.getUsername());
-            response.put("message", "Login successful");
-
-            return ResponseEntity.ok(response);
+            if (passwordEncoder.matches(user.getPassword(), u.getPassword())) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("id", u.getId());
+                response.put("username", u.getUsername());
+                response.put("message", "Login successful");
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));
+            }
         } else {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid credentials");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not found"));
         }
     }
 }

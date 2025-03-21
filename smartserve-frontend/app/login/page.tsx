@@ -34,7 +34,8 @@ export default function LoginPage() {
 			});
 
 			if (!res.ok) {
-				throw new Error("An error occurred. Please try again.");
+				const errorData = await res.json(); // Assuming the backend sends JSON with an error description
+				throw new Error(errorData.error || "An error occurred. Please try again.");
 			}
 
 			const responseData = await res.json();
