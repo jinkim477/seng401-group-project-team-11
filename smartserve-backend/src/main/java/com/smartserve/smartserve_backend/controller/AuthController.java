@@ -61,12 +61,12 @@ public class AuthController {
         userRepository.save(user);
 
         // Email content matching the frontend style
-        String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; color: #333;'>"
+        String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #494949; color: #333;'>"
                 + "<h2 style='color: #4CAF50; text-align: center;'>Welcome to SmartServe, " + user.getUsername()
                 + "!</h2>"
                 + "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>"
                 + "<p>Thank you for registering with SmartServe! We're thrilled to have you join us. 🌱</p>"
-                + "<div style='padding: 18px; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>"
+                + "<div style='padding: 18px; background-color: #e2ded1; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>"
                 + "<h4>Here’s what you can do:</h4>"
                 + "<ul>"
                 + "<li><strong>Create and customize meal plans</strong> tailored to your dietary needs.</li>"
@@ -80,7 +80,7 @@ public class AuthController {
                 + "<li>Start planning and tracking your meals with ease!</li>"
                 + "</ol>"
                 + "</div>"
-                + "<p>Need assistance? You can always reach out to us by <a href='mailto:smartserve401@smartserve.com' style='color: #4CAF50; text-decoration: none;'>email</a> or visit our <a href='https://smartserve.com/support' style='color: #4CAF50; text-decoration: none;'>Support Center</a>.</p>"
+                + "<p>Need assistance? You can always reach out to us by <a href='mailto:smartserve401@smartserve.com' style='color: #4CAF50; text-decoration: none;'>email</a> or visit our <a href='https://smartserveai.vercel.app/home style='color: #4CAF50; text-decoration: none;'>Support Center</a>.</p>"
                 + "<p style='text-align: center; font-size: 14px; color: #666;'>Happy meal planning! 🍽️</p>"
                 + "<p style='text-align: center; font-size: 14px; color: #666;'>Warm regards,<br>The SmartServe Team</p>"
                 + "</div>";
