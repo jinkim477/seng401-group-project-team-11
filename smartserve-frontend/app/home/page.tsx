@@ -1,11 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import ThemeToggle from "../components/ThemeToggle";
 import Image from "next/image";
 
 export default function HomePage() {
 	const router = useRouter();
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	useEffect(() => {
+		const storedUsername = localStorage.getItem("auth-token");
+		setIsLoggedIn(!!storedUsername);
+	}, []);
+
+	// Handle Logout
+	const handleLogout = () => {
+		localStorage.removeItem("auth-token"); // Remove auth-token
+		localStorage.removeItem("userId"); // Remove userId
+		setIsLoggedIn(false);
+		router.push("/home"); // Redirect to home page
+	};
 
 	return (
 		<div className="relative min-h-screen bg-primary text-dark dark:bg-dark dark:text-primary flex flex-col items-center px-4 py-6 lg:px-8 lg:py-4 overflow-hidden">
@@ -38,30 +53,52 @@ export default function HomePage() {
 						<p className="relative absolute lg:left-[-50px]">
 							Conquer your goals,
 						</p>
-						<p>
-							one meal at a time!
-						</p>
+						<p>one meal at a time!</p>
 					</h2>
-					<div className="flex flex-col space-y-4 lg:space-y-16 w-full max-w-lg text-xl font-bold text-primary dark:text-dark mt-0 mb-0">
-						<button
-							onClick={() => router.push("/login")}
-							className="bg-dark dark:bg-primary py-5 rounded-full shadow-xl hover:scale-105 transition shadow-lg relative absolute lg:left-[-25px]"
-						>
-							Login
-						</button>
-						<button
-							onClick={() => router.push("/register")}
-							className="bg-accent-gray dark:bg-accent-beige py-5 rounded-full shadow-xl hover:scale-105 transition shadow-lg"
-						>
-							Register
-						</button>
-						<button
-							onClick={() => router.push("/dashboard")}
-							className="bg-accent-green text-dark dark:bg-accent-green py-5 rounded-full shadow-xl hover:scale-105 transition shadow-lg relative absolute lg:left-[-25px]"
-						>
-							Continue as Guest
-						</button>
-					</div>
+
+					{isLoggedIn ? (
+						<div className="flex flex-col space-y-4 lg:space-y-16 w-full max-w-lg text-xl font-bold text-primary dark:text-dark mt-0 mb-0">
+							<button
+								onClick={() => router.push("/dashboard")}
+								className="bg-dark dark:bg-primary py-5 rounded-full shadow-xl hover:scale-105 transition shadow-lg relative absolute lg:left-[-25px]"
+							>
+								Dashboard
+							</button>
+							<button
+								onClick={() => router.push("/previous-meals")}
+								className="bg-accent-gray dark:bg-accent-beige py-5 rounded-full shadow-xl hover:scale-105 transition shadow-lg"
+							>
+								Previous Meal Plans
+							</button>
+							<button
+								onClick={(handleLogout)}
+								className="bg-red-800 dark:bg-red-200 py-5 rounded-full shadow-xl hover:scale-105 transition shadow-lg relative absolute lg:left-[-25px]"
+							>
+								Logout
+							</button>
+						</div>
+					) : (
+						<div className="flex flex-col space-y-4 lg:space-y-16 w-full max-w-lg text-xl font-bold text-primary dark:text-dark mt-0 mb-0">
+							<button
+								onClick={() => router.push("/login")}
+								className="bg-dark dark:bg-primary py-5 rounded-full shadow-xl hover:scale-105 transition shadow-lg relative absolute lg:left-[-25px]"
+							>
+								Login
+							</button>
+							<button
+								onClick={() => router.push("/register")}
+								className="bg-accent-gray dark:bg-accent-beige py-5 rounded-full shadow-xl hover:scale-105 transition shadow-lg"
+							>
+								Register
+							</button>
+							<button
+								onClick={() => router.push("/dashboard")}
+								className="bg-accent-green text-dark dark:bg-accent-green py-5 rounded-full shadow-xl hover:scale-105 transition shadow-lg relative absolute lg:left-[-25px]"
+							>
+								Continue as Guest
+							</button>
+						</div>
+					)}
 				</div>
 				<div className="w-full lg:h-full lg:w-5/12 flex flex-col justify-end items-center lg:items-end mt-6 lg:mt-0">
 					{[
