@@ -9,68 +9,10 @@ import MealPlanDisplay from "../components/MealPlanDisplay";
 import Footer from "../components/Footer";
 import AboutUs from "../components/AboutUs";
 import Contact from "../components/Contact";
+import { Meal, Day, MealPlan, FormDataType, MealScope } from "../components/types";
 
 const RU_API_URL = "https://seng401-group-project-team-11-production.up.railway.app/gemini/generate";
 const G_API_URL = "https://seng401-group-project-team-11-production.up.railway.app/gemini/guest/generate";
-
-type Meal = {
-	name: string;
-	price: string;
-	ingredients: string[];
-	instructions: string;
-	prep_time: string;
-	macros: {
-		calories: string;
-		protein: string;
-		carbs: string;
-		fat: string;
-	};
-};
-
-type Day = {
-	[mealType: string]: Meal; // Meal types (e.g., breakfast, lunch, dinner)
-};
-
-type MealPlan = {
-	[dayKey: string]: Day; // Days (e.g., day1, day2)
-};
-
-// Define Form Data Type
-type FormDataType = {
-	selectedDiets: string[];
-	otherDiet: boolean;
-	otherDietDetails: string;
-	inclusions: string;
-	allergies: string;
-	exclusions: string;
-
-	// New Fields for User Options
-	weight: number;
-	height: number;
-	sex: string;
-	priceRange: number;
-	prepTime: number;
-	cookTime: number;
-
-	// New Fields for Customization
-	selectedGoals: string[];
-	calorieLimit: number;
-	proteinRequirement: number;
-	nutrients: {
-		potassium: number;
-		phosphorus: number;
-		vitamins: number;
-		calcium: number;
-		sodium: number;
-	};
-	mealScope: MealScope;
-};
-
-enum MealScope {
-	OneDay = "One Day",
-	ThreeDays = "Three Days",
-	OneWeek = "One Week",
-}
 
 const initialFormData: FormDataType = {
 	selectedDiets: [],
