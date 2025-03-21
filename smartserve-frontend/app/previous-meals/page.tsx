@@ -3,46 +3,10 @@
 import React, { useEffect, useState } from "react";
 import LogoHeader from "../components/LogoHeader";
 import Footer from "../components/Footer";
+import { Meal, DailyTotals, ParsedResponse, MealPlanHistory } from "../components/types";
 
 const API_URL = "https://seng401-group-project-team-11-production.up.railway.app/gemini/history";
 
-type Meal = {
-	name: string;
-	price: string;
-	ingredients?: string[];
-	instructions?: string;
-	prep_time?: string;
-	cook_time?: string;
-	macros?: {
-		calories?: string;
-		protein?: string;
-		carbs?: string;
-		fat?: string;
-	};
-};
-
-type DailyTotals = {
-	calories: string;
-	protein: string;
-	potassium: string;
-	phosphorus: string;
-	vitamins: string;
-	calcium: string;
-	sodium: string;
-};
-
-type ParsedResponse = {
-	[dayKey: string]: {
-		[mealType: string]: Meal;
-		daily_totals?: DailyTotals;
-	};
-};
-
-type MealPlanHistory = {
-	id: string;
-	createdTime: string;
-	response: string;
-};
 
 export default function MealHistoryPage() {
 	const [mealHistory, setMealHistory] = useState<MealPlanHistory[]>([]);
