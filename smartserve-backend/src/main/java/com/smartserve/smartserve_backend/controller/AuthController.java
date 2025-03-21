@@ -40,11 +40,21 @@ public class AuthController {
 
     // Registration endpoint
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
-        if (userRepository.findByUsername(user.getUsername()).isPresent() ||
-                userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("User already exists");
+    public ResponseEntity<Object> registerUser(@RequestBody User user) {
+        // Check if username is taken
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("error", "Username Taken"));
         }
+    
+        // Check if the email is already associated with an account
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("error", "This email is already registered to an account"));
+        }
+        
         // Encrypt the password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
