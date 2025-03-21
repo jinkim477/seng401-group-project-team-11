@@ -1,14 +1,12 @@
 package com.smartserve.smartserve_backend.controller;
 
 import com.smartserve.smartserve_backend.model.User;
-import com.smartserve.smartserve_backend.repository.GeneratedMealPlanRepository;
 import com.smartserve.smartserve_backend.repository.UserRepository;
 import com.smartserve.smartserve_backend.service.EmailService;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,25 +31,39 @@ public class AuthController {
     public ResponseEntity<String> deleteUser(@RequestParam Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-    
-        // Prepare HTML content for the email
-        String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #494949; color: #333;'>"
-                + "<h2 style='color: #4CAF50; text-align: center;'>Account Deletion Confirmation</h2>"
-                + "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>"
+
+        String emailStyle = "<style>"
+        + "body { font-family: Helvetica, sans-serif; margin: 0; padding: 20px; background-color: #e2ded1; color: #494949; }"
+        + "header { display: flex; justify-content: space-between; align-items: center; }"
+        + "h2 { color: #4CAF50; text-align: center; }"
+        + "p { font-size: 16px; }"
+        + ".content { padding: 18px; background-color: rgb(163, 157, 136); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }"
+        + "</style>";
+        
+        // Prepare HTML content with logos for account deletion confirmation
+        String htmlContent = "<div style='" + emailStyle + "'>"
+                + "<header>"
+                + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
+                + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
+                + "</header>"
+                + "<h2>Account Deletion Confirmation</h2>"
+                + "<p>Hello " + user.getUsername() + ",</p>"
                 + "<p>Your SmartServe account has been permanently deleted. We're sorry to see you go.</p>"
+                + "<div class='content'>"
                 + "<p>If this was a mistake or you did not request account deletion, please contact our support immediately.</p>"
-                + "<p style='text-align: center; font-size: 14px; color: #666;'>Thank you for using SmartServe. We hope to serve you again in the future.</p>"
-                + "<p style='text-align: center; font-size: 14px; color: #666;'>Best regards,<br>The SmartServe Team</p>"
+                + "</div>"
+                + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Thank you for using SmartServe. We hope to serve you again in the future.</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Best regards,<br>The SmartServe Team</p>"
                 + "</div>";
-    
+        
         // Send the email
         emailService.sendRegistrationEmail(user.getEmail(), "SmartServe Account Deletion Confirmation", htmlContent);
-    
+
         // Proceed to delete the user
         userRepository.delete(user);
         return ResponseEntity.ok("Deleted Successfully");
     }
-    
+
     // Registration endpoint
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody User user) {
@@ -72,15 +84,26 @@ public class AuthController {
         // Encrypt the password and save the user
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        // Common style for emails
+        String emailStyle = "<style>"
+                + "body { font-family: Helvetica, sans-serif; margin: 0; padding: 20px; background-color: #e2ded1; color: #494949; }"
+                + "header { display: flex; justify-content: space-between; align-items: center; }"
+                + "h2 { color: #4CAF50; text-align: center; }"
+                + "p { font-size: 16px; }"
+                + ".content { padding: 18px; background-color:rgb(163, 157, 136); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }"
+                + "</style>";
 
-        // Email content matching the frontend style
-        String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #494949; color: #333;'>"
-                + "<h2 style='color: #4CAF50; text-align: center;'>Welcome to SmartServe, " + user.getUsername()
-                + "!</h2>"
-                + "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>"
+        // Prepare HTML content with logos
+        String htmlContent = "<div style='" + emailStyle + "'>"
+                + "<header>"
+                + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
+                + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
+                + "</header>"
+                + "<h2>Welcome to SmartServe, " + user.getUsername() + "!</h2>"
+                + "<p>Hello " + user.getUsername() + ",</p>"
                 + "<p>Thank you for registering with SmartServe! We're thrilled to have you join us. 🌱</p>"
-                + "<div style='padding: 18px; background-color: #e2ded1; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>"
-                + "<h4>Here’s what you can do:</h4>"
+                + "<div class='content'>"
+                + "Here’s what you can do:"
                 + "<ul>"
                 + "<li><strong>Create and customize meal plans</strong> tailored to your dietary needs.</li>"
                 + "<li><strong>Access detailed nutritional information</strong> to stay on top of your health.</li>"
@@ -93,9 +116,9 @@ public class AuthController {
                 + "<li>Start planning and tracking your meals with ease!</li>"
                 + "</ol>"
                 + "</div>"
-                + "<p>Need assistance? You can always reach out to us by <a href='mailto:smartserve401@smartserve.com' style='color: #4CAF50; text-decoration: none;'>email</a> or visit our <a href='https://smartserveai.vercel.app/home style='color: #4CAF50; text-decoration: none;'>Support Center</a>.</p>"
-                + "<p style='text-align: center; font-size: 14px; color: #666;'>Happy meal planning! 🍽️</p>"
-                + "<p style='text-align: center; font-size: 14px; color: #666;'>Warm regards,<br>The SmartServe Team</p>"
+                + "<p>Need assistance? You can always reach out to us by <a href='mailto:smartserve401@smartserve.com' style='color: #4CAF50; text-decoration: none;'>email</a> or visit our <a href='https://smartserve.com/home' style='color: #4CAF50; text-decoration: none;'>Support Center</a>.</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Happy meal planning! 🍽️</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Warm regards,<br>The SmartServe Team</p>"
                 + "</div>";
 
         // Send registration email with enhanced HTML content
