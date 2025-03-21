@@ -35,8 +35,7 @@ public class AuthController {
         // Prepare HTML content with logos for account deletion confirmation
         String htmlContent = "<div style='font-family: Helvetica, sans-serif; margin: 0; padding: 20px; background-color: #e2ded1; color: #494949;'>"
         + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
-        + "<h2 style='color: #4CAF50; text-align: center;'>Account Deletion Confirmation</h2>"
-        + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
+        + "<h2 style='color:rgb(227, 226, 221); text-align: center;'>Account Deletion Confirmation</h2>"
         + "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>"
         + "<p>Your SmartServe account has been permanently deleted. We're sorry to see you go.</p>"
         + "<div style='padding: 18px; background-color: #4CAF50; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>"
@@ -78,7 +77,7 @@ public class AuthController {
         // Prepare HTML content with logos
         String htmlContent = "<div style='font-family: Helvetica, sans-serif; margin: 0; padding: 20px; background-color: #e2ded1; color: #494949;'>"
                 + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
-                + "<h2 style='color: #4CAF50; text-align: center;'>Welcome to SmartServe, " + user.getUsername()
+                + "<h2 style='color: #rgb(227, 226, 221); text-align: center;'>Welcome to SmartServe, " + user.getUsername()
                 + "!</h2>"
                 + "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>"
                 + "<p>Thank you for registering with SmartServe! We're thrilled to have you join us. 🌱</p>"
