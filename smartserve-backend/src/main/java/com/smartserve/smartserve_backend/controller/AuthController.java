@@ -33,12 +33,25 @@ public class AuthController {
     public ResponseEntity<String> deleteUser(@RequestParam Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
+    
+        // Prepare HTML content for the email
+        String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #494949; color: #333;'>"
+                + "<h2 style='color: #4CAF50; text-align: center;'>Account Deletion Confirmation</h2>"
+                + "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>"
+                + "<p>Your SmartServe account has been permanently deleted. We're sorry to see you go.</p>"
+                + "<p>If this was a mistake or you did not request account deletion, please contact our support immediately.</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #666;'>Thank you for using SmartServe. We hope to serve you again in the future.</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #666;'>Best regards,<br>The SmartServe Team</p>"
+                + "</div>";
+    
+        // Send the email
+        emailService.sendRegistrationEmail(user.getEmail(), "SmartServe Account Deletion Confirmation", htmlContent);
+    
+        // Proceed to delete the user
         userRepository.delete(user);
         return ResponseEntity.ok("Deleted Successfully");
     }
-
-    // Registration endpoint
+    
     // Registration endpoint
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody User user) {
