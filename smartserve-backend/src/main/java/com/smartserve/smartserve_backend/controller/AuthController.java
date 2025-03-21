@@ -1,14 +1,12 @@
 package com.smartserve.smartserve_backend.controller;
 
 import com.smartserve.smartserve_backend.model.User;
-import com.smartserve.smartserve_backend.repository.GeneratedMealPlanRepository;
 import com.smartserve.smartserve_backend.repository.UserRepository;
 import com.smartserve.smartserve_backend.service.EmailService;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,13 +33,13 @@ public class AuthController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     
         // Prepare HTML content for the email
-        String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #494949; color: #333;'>"
+        String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #e2ded1; color: #494949;'>"
                 + "<h2 style='color: #4CAF50; text-align: center;'>Account Deletion Confirmation</h2>"
                 + "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>"
                 + "<p>Your SmartServe account has been permanently deleted. We're sorry to see you go.</p>"
                 + "<p>If this was a mistake or you did not request account deletion, please contact our support immediately.</p>"
-                + "<p style='text-align: center; font-size: 14px; color: #666;'>Thank you for using SmartServe. We hope to serve you again in the future.</p>"
-                + "<p style='text-align: center; font-size: 14px; color: #666;'>Best regards,<br>The SmartServe Team</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Thank you for using SmartServe. We hope to serve you again in the future.</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Best regards,<br>The SmartServe Team</p>"
                 + "</div>";
     
         // Send the email
@@ -74,7 +72,7 @@ public class AuthController {
         userRepository.save(user);
 
         // Email content matching the frontend style
-        String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #494949; color: #333;'>"
+        String htmlContent = "<div style='font-family: Helvetica, sans-serif; margin: 0; padding: 20px; background-color: #494949; color: #e2ded1;'>"
                 + "<h2 style='color: #4CAF50; text-align: center;'>Welcome to SmartServe, " + user.getUsername()
                 + "!</h2>"
                 + "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>"
@@ -94,8 +92,8 @@ public class AuthController {
                 + "</ol>"
                 + "</div>"
                 + "<p>Need assistance? You can always reach out to us by <a href='mailto:smartserve401@smartserve.com' style='color: #4CAF50; text-decoration: none;'>email</a> or visit our <a href='https://smartserveai.vercel.app/home style='color: #4CAF50; text-decoration: none;'>Support Center</a>.</p>"
-                + "<p style='text-align: center; font-size: 14px; color: #666;'>Happy meal planning! 🍽️</p>"
-                + "<p style='text-align: center; font-size: 14px; color: #666;'>Warm regards,<br>The SmartServe Team</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Happy meal planning! 🍽️</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Warm regards,<br>The SmartServe Team</p>"
                 + "</div>";
 
         // Send registration email with enhanced HTML content
