@@ -34,7 +34,8 @@ export default function LoginPage() {
 			});
 
 			if (!res.ok) {
-				throw new Error("An error occurred. Please try again.");
+				const errorData = await res.json(); // Assuming the backend sends JSON with an error description
+				throw new Error(errorData.error || "An error occurred. Please try again.");
 			}
 
 			const responseData = await res.json();
@@ -107,6 +108,17 @@ export default function LoginPage() {
 										className="text-accent-green dark:text-green-800 hover:underline"
 									>
 										Register here
+									</a>
+								</p>
+							</div>
+							<div>
+								<p className="text-center mt-4">
+									Forgot your password?{" "}
+									<a
+										href="/reset-password"
+										className="text-accent-green dark:text-green-800 hover:underline"
+									>
+										Reset here
 									</a>
 								</p>
 							</div>

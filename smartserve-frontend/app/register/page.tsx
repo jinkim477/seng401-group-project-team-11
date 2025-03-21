@@ -20,10 +20,12 @@ export default function RegisterPage() {
 				body: JSON.stringify({ username, email, password }),
 			});
 
-			if (!res.ok) {
-				throw new Error("Registration failed.");
-			}
+			const data = await res.json();  // Assuming the server sends back JSON data
 
+			if (!res.ok) {
+				throw new Error(data.message || "Registration failed.");
+			}
+	
 			router.push("/login"); // Redirect to login page after successful signup
 		} catch (err) {
 			setError(err.message);
