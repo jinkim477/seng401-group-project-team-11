@@ -27,35 +27,35 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
 
+    private String getEmailStyle() {
+        return "<style>"
+                + "body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #e2ded1; color: #333; }"
+                + "header { display: flex; justify-content: space-between; align-items: center; }"
+                + "h2 { color: #4CAF50; text-align: center; }"
+                + "p { font-size: 16px; }"
+                + ".content { padding: 18px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }"
+                + "</style>";
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(@RequestParam Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        String emailStyle = "<style>"
-        + "body { font-family: Helvetica, sans-serif; margin: 0; padding: 20px; background-color: #e2ded1; color: #494949; }"
-        + "header { display: flex; justify-content: space-between; align-items: center; }"
-        + "h2 { color: #4CAF50; text-align: center; }"
-        + "p { font-size: 16px; }"
-        + ".content { padding: 18px; background-color: rgb(163, 157, 136); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }"
-        + "</style>";
-        
         // Prepare HTML content with logos for account deletion confirmation
-        String htmlContent = "<div style='" + emailStyle + "'>"
+        String htmlContent = getEmailStyle()
+                + "<div>"
                 + "<header>"
                 + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
+                + "<h2>Account Deletion Confirmation</h2>"
                 + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
                 + "</header>"
-                + "<h2>Account Deletion Confirmation</h2>"
                 + "<p>Hello " + user.getUsername() + ",</p>"
                 + "<p>Your SmartServe account has been permanently deleted. We're sorry to see you go.</p>"
-                + "<div class='content'>"
                 + "<p>If this was a mistake or you did not request account deletion, please contact our support immediately.</p>"
-                + "</div>"
                 + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Thank you for using SmartServe. We hope to serve you again in the future.</p>"
                 + "<p style='text-align: center; font-size: 14px; color: #4CAF50;'>Best regards,<br>The SmartServe Team</p>"
                 + "</div>";
-        
+
         // Send the email
         emailService.sendRegistrationEmail(user.getEmail(), "SmartServe Account Deletion Confirmation", htmlContent);
 
@@ -84,22 +84,14 @@ public class AuthController {
         // Encrypt the password and save the user
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        // Common style for emails
-        String emailStyle = "<style>"
-                + "body { font-family: Helvetica, sans-serif; margin: 0; padding: 20px; background-color: #e2ded1; color: #494949; }"
-                + "header { display: flex; justify-content: space-between; align-items: center; }"
-                + "h2 { color: #4CAF50; text-align: center; }"
-                + "p { font-size: 16px; }"
-                + ".content { padding: 18px; background-color:rgb(163, 157, 136); border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }"
-                + "</style>";
-
         // Prepare HTML content with logos
-        String htmlContent = "<div style='" + emailStyle + "'>"
+        String htmlContent = getEmailStyle()
+                + "<div>"
                 + "<header>"
                 + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
+                + "<h2>Welcome to SmartServe, " + user.getUsername() + "!</h2>"
                 + "<img src='https://seng401-group-project-team-11-production.up.railway.app/logo.png' alt='SmartServe Logo' style='height: 50px;'>"
                 + "</header>"
-                + "<h2>Welcome to SmartServe, " + user.getUsername() + "!</h2>"
                 + "<p>Hello " + user.getUsername() + ",</p>"
                 + "<p>Thank you for registering with SmartServe! We're thrilled to have you join us. 🌱</p>"
                 + "<div class='content'>"
