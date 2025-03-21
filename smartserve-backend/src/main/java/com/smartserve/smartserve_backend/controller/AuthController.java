@@ -39,9 +39,10 @@ public class AuthController {
     }
 
     // Registration endpoint
+    // Registration endpoint
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(@RequestBody User user) {
-        // Check if username is taken
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User user) {
+        // Check if the username is already taken
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
@@ -55,45 +56,40 @@ public class AuthController {
                     .body(Map.of("error", "This email is already registered to an account"));
         }
 
-        // Encrypt the password
+        // Encrypt the password and save the user
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
-        // Prepare HTML content with CSS matching frontend style
+        // Email content matching the frontend style
         String htmlContent = "<div style='font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; color: #333;'>"
-                +
-                "<h2 style='color: #4CAF50; text-align: center;'>Welcome to SmartServe, " + user.getUsername()
-                + "!</h2>" +
-                "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>" +
-                "<p>Thank you for registering with SmartServe! We're thrilled to have you join us. 🌱</p>" +
-                "<div style='padding: 18px; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>"
-                +
-                "<h4>Here’s what you can do:</h4>" +
-                "<ul>" +
-                "<li><strong>Create and customize meal plans</strong> tailored to your dietary needs.</li>" +
-                "<li><strong>Access detailed nutritional information</strong> to stay on top of your health.</li>" +
-                "<li><strong>Explore and save your favorite recipes.</strong></li>" +
-                "</ul>" +
-                "<h4>Get Started:</h4>" +
-                "<ol>" +
-                "<li>Log in to your account <a href='https://smartserveai.vercel.app/login' style='color: #4CAF50; text-decoration: none;'>here</a>.</li>"
-                +
-                "<li>Visit your Dashboard to set your dietary preferences.</li>" +
-                "<li>Start planning and tracking your meals with ease!</li>" +
-                "</ol>" +
-                "</div>" +
-                "<p>Need assistance? You can always reach out to us by <a href='mailto:smartserve401@smartserve.com' style='color: #4CAF50; text-decoration: none;'>email</a> or visit our <a href='https://smartserve.com/support' style='color: #4CAF50; text-decoration: none;'>Support Center</a>.</p>"
-                +
-                "<p style='text-align: center; font-size: 14px; color: #666;'>Happy meal planning! 🍽️</p>" +
-                "<p style='text-align: center; font-size: 14px; color: #666;'>Warm regards,<br>The SmartServe Team</p>"
-                +
-                "</div>";
+                + "<h2 style='color: #4CAF50; text-align: center;'>Welcome to SmartServe, " + user.getUsername()
+                + "!</h2>"
+                + "<p style='font-size: 16px;'>Hello " + user.getUsername() + ",</p>"
+                + "<p>Thank you for registering with SmartServe! We're thrilled to have you join us. 🌱</p>"
+                + "<div style='padding: 18px; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);'>"
+                + "<h4>Here’s what you can do:</h4>"
+                + "<ul>"
+                + "<li><strong>Create and customize meal plans</strong> tailored to your dietary needs.</li>"
+                + "<li><strong>Access detailed nutritional information</strong> to stay on top of your health.</li>"
+                + "<li><strong>Explore and save your favorite recipes.</strong></li>"
+                + "</ul>"
+                + "<h4>Get Started:</h4>"
+                + "<ol>"
+                + "<li>Log in to your account <a href='https://smartserveai.vercel.app/login' style='color: #4CAF50; text-decoration: none;'>here</a>.</li>"
+                + "<li>Visit your Dashboard to set your dietary preferences.</li>"
+                + "<li>Start planning and tracking your meals with ease!</li>"
+                + "</ol>"
+                + "</div>"
+                + "<p>Need assistance? You can always reach out to us by <a href='mailto:smartserve401@smartserve.com' style='color: #4CAF50; text-decoration: none;'>email</a> or visit our <a href='https://smartserve.com/support' style='color: #4CAF50; text-decoration: none;'>Support Center</a>.</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #666;'>Happy meal planning! 🍽️</p>"
+                + "<p style='text-align: center; font-size: 14px; color: #666;'>Warm regards,<br>The SmartServe Team</p>"
+                + "</div>";
 
         // Send registration email with enhanced HTML content
         emailService.sendRegistrationEmail(user.getEmail(), "Welcome to SmartServe, " + user.getUsername() + " 🎉",
                 htmlContent);
 
-        return ResponseEntity.ok("User registered successfully");
+        return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
 
     // Login endpoint (for demonstration purposes)
