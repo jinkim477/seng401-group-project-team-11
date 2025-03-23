@@ -30,9 +30,22 @@ const AuthButtons = () => {
 			{!isLoggedIn ? (
 				<button
 					onClick={() => handleNavigate("/login")}
-					className="px-3 py-1 sm:px-4 sm:py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+					className="px-3 py-1 sm:px-4 sm:py-2 bg-dark dark:bg-primary text-primary dark:text-dark rounded-lg hover:bg-green-900 dark:hover:bg-green-100 transition flex items-center space-x-2 shadow-md hover:shadow-lg hover:scale-110"
 				>
-					Login
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						className="stroke-primary dark:stroke-dark"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3" />
+					</svg>
+					<span>Login</span>
 				</button>
 			) : (
 				<>
@@ -72,7 +85,7 @@ const AuthButtons = () => {
 								stroke-width="2"
 								stroke-linecap="round"
 								stroke-linejoin="round"
-                                style={{ marginRight: '8px'}}
+								style={{ marginRight: "8px" }}
 							>
 								<path d="M19 12H6M12 5l-7 7 7 7" />
 							</svg>
