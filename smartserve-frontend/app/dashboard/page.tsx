@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import LogoHeader from "../components/LogoHeader";
 import Sidebar from "../components/Sidebar";
 import UserOptions from "../components/UserOptions";
@@ -53,6 +53,8 @@ export default function DietOptionsPage() {
 
     // State to store form data
     const [formData, setFormData] = useState<FormDataType>(initialFormData);
+
+    const mealPlanRef = useRef<HTMLDivElement>(null);
 
     const tabs = [
         { id: "User-Options", label: "User Options" },
@@ -235,6 +237,9 @@ export default function DietOptionsPage() {
             alert("An error occurred while generating the meal plan.");
         } finally {
             setLoading(false);
+            if (mealPlanRef.current) {
+                mealPlanRef.current.scrollIntoView({ behavior: "smooth" });
+            }
         }
     };
 
@@ -294,7 +299,11 @@ export default function DietOptionsPage() {
                 </div>
             </div>
 
-            {mealPlan && <MealPlanDisplay mealPlan={mealPlan} />}
+            {mealPlan && (
+                <div ref={mealPlanRef} className="w-full">
+                    <MealPlanDisplay mealPlan={mealPlan} />
+                </div>
+            )}
 
             {/* About Us */}
             <AboutUs />
