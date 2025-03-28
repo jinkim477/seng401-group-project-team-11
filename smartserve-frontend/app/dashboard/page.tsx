@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import AboutUs from "../components/AboutUs";
 import Contact from "../components/Contact";
 import { Meal, Day, MealPlan, FormDataType, MealScope } from "../components/types";
+import MeetTheTeam from "../components/MeetTheTeam";
 
 const RU_API_URL = "https://seng401-group-project-team-11-production.up.railway.app/gemini/generate";
 const G_API_URL = "https://seng401-group-project-team-11-production.up.railway.app/gemini/guest/generate";
@@ -307,6 +308,8 @@ export default function DietOptionsPage() {
 
             {/* About Us */}
             <AboutUs />
+            {/* Meet the Team */}
+            <MeetTheTeam />
             {/* Contact */}
             <Contact />
             {/* Footer */}
